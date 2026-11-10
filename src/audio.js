@@ -32,10 +32,11 @@ export function segundosRespaldo(texto) {
 
 /**
  * @param {{di: string, audio?: string}} item reactivo de r2
- * @param {{maxReproducciones?: number, esperaInicioMs?: number}} [opciones]
+ * @param {{maxReproducciones?: number, esperaInicioMs?: number, velocidad?: number}} [opciones]
+ *   `velocidad` solo afecta la síntesis de voz; los audios grabados suenan a su ritmo natural.
  * @returns {{elemento: HTMLElement}}
  */
-export function crearReproductor(item, { maxReproducciones = 2, esperaInicioMs = 3000 } = {}) {
+export function crearReproductor(item, { maxReproducciones = 2, esperaInicioMs = 3000, velocidad = 1 } = {}) {
   let usadas = 0;
   let sonando = false;
   let detenerActual = null;
@@ -101,7 +102,7 @@ export function crearReproductor(item, { maxReproducciones = 2, esperaInicioMs =
       if (!sintesis || !Utterance) { fallo(); return; }
       const frase = new Utterance(item.di);
       frase.lang = 'es-MX';
-      frase.rate = 0.9;
+      frase.rate = velocidad;
       const voz = elegirVoz();
       if (voz) frase.voice = voz;
       frase.onstart = marcarInicio;

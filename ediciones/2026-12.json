@@ -2,15 +2,19 @@
  "id": "2026-12",
  "titulo": "Diciembre 2026",
  "tema": "Tórax, tiroides, rodilla, hombro, hígado y obstetricia",
+ "dificultad": {
+  "velocidadVoz": 1.1,
+  "segundosOrtografia": 10
+ },
  "r1": [
   {
    "q": "Se observa ___ pleural derecho de pequeña cuantía.",
    "o": [
     "derrame",
     "derame",
-    "derramme"
+    "derramé"
    ],
-   "nota": "Derrame lleva rr: entre vocales, el sonido fuerte se escribe con doble r."
+   "nota": "Derrame (sustantivo) lleva rr y no lleva tilde. Derramé es el verbo derramar en pasado."
   },
   {
    "q": "Glándula tiroides con nódulo ___ en el lóbulo izquierdo.",
@@ -53,7 +57,7 @@
    "o": [
     "neumonía",
     "neumonia",
-    "neumunía"
+    "neumónia"
    ],
    "nota": "Neumonía lleva tilde en la í para romper el diptongo (hiato)."
   },
@@ -62,9 +66,9 @@
    "o": [
     "alteraciones",
     "alteraziones",
-    "alterasiones"
+    "altéraciones"
    ],
-   "nota": "Alterar → alteración → alteraciones: con c."
+   "nota": "Alterar → alteración → alteraciones: con c y sin tilde en plural."
   },
   {
    "q": "Se recomienda ___ por imagen.",
@@ -73,7 +77,7 @@
     "siguimiento",
     "seguimíento"
    ],
-   "nota": "Viene de seguir: seguimiento, con e en la primera sílaba."
+   "nota": "Viene de seguir: seguimiento, con e en la primera sílaba y sin tilde."
   },
   {
    "q": "Nódulo con ___ gruesas en su interior.",
@@ -89,7 +93,7 @@
    "o": [
     "mediastino",
     "mediastíno",
-    "mediastimo"
+    "mediástino"
    ],
    "nota": "Mediastino es llana terminada en vocal: sin tilde."
   },
@@ -139,15 +143,6 @@
    "nota": "Iso + eco: isoecoico, sin h intercalada y sin tilde."
   },
   {
-   "q": "Nódulo tiroideo clasificado como ___ 3.",
-   "o": [
-    "TI-RADS",
-    "TIRRADS",
-    "TI-RAD"
-   ],
-   "nota": "El sistema del ACR para tiroides se escribe TI-RADS, con guion."
-  },
-  {
    "q": "Hígado con ___ grado I.",
    "o": [
     "esteatosis",
@@ -188,9 +183,9 @@
    "o": [
     "fascia",
     "facia",
-    "fasia"
+    "fascía"
    ],
-   "nota": "Fascia (membrana fibrosa) se escribe con sc."
+   "nota": "Fascia (membrana fibrosa) se escribe con sc y sin tilde."
   },
   {
    "q": "Quiste de ___ en el hueco poplíteo.",
@@ -224,7 +219,7 @@
    "o": [
     "ósea",
     "osea",
-    "óssea"
+    "ósia"
    ],
    "nota": "Ósea es esdrújula: lleva tilde."
   },
@@ -236,6 +231,87 @@
     "costofrénícos"
    ],
    "nota": "Costofrénicos es esdrújula: una sola tilde, en la é."
+  },
+  {
+   "q": "Engrosamiento de la pared del ___ terminal.",
+   "o": [
+    "íleon",
+    "ilion",
+    "ileón"
+   ],
+   "nota": "Íleon (intestino delgado) lleva tilde en la í; ilion es un hueso de la pelvis."
+  },
+  {
+   "q": "Fractura del ala del ___ derecho.",
+   "o": [
+    "ilion",
+    "íleon",
+    "ilión"
+   ],
+   "nota": "Ilion (hueso de la pelvis) no lleva tilde; íleon es parte del intestino."
+  },
+  {
+   "q": "Colección periapendicular compatible con ___.",
+   "o": [
+    "absceso",
+    "acceso",
+    "abseso"
+   ],
+   "nota": "Absceso (colección de pus) lleva bs y sc. Acceso existe, pero significa entrada."
+  },
+  {
+   "q": "Glándulas ___ no visibles.",
+   "o": [
+    "paratiroides",
+    "paratifoides",
+    "paratiroídes"
+   ],
+   "nota": "Paratiroides son glándulas; paratifoidea es una fiebre infecciosa."
+  },
+  {
+   "q": "Lesión ___ en el lóbulo hepático derecho.",
+   "o": [
+    "hipodensa",
+    "hipodenza",
+    "hipodénsa"
+   ],
+   "nota": "Denso → hipodensa: con s y sin tilde."
+  },
+  {
+   "q": "Patrón en ___ esmerilado.",
+   "o": [
+    "vidrio",
+    "bidrio",
+    "vídrio"
+   ],
+   "nota": "Vidrio se escribe con v y es llana terminada en vocal: sin tilde."
+  },
+  {
+   "q": "Imagen ___ en el ápice pulmonar derecho.",
+   "o": [
+    "cavitada",
+    "cabitada",
+    "cavitáda"
+   ],
+   "nota": "Cavidad → cavitada: con v."
+  },
+  {
+   "q": "Proceso ___ de vías respiratorias altas.",
+   "o": [
+    "inflamatorio",
+    "imflamatorio",
+    "inflamatório"
+   ],
+   "nota": "Antes de f se escribe n: inflamatorio. Llana terminada en vocal: sin tilde."
+  },
+  {
+   "q": "Se descarta ___ de la vesícula biliar.",
+   "o": [
+    "perforación",
+    "perfóración",
+    "perforasión"
+   ],
+   "nota": "Perforar → perforación: con c y una sola tilde en la ó."
   }
  ],
  "r2": [

@@ -2,6 +2,10 @@
  "id": "2026-11",
  "titulo": "Noviembre 2026",
  "tema": "Columna, cráneo, mama, tórax y abdomen",
+ "dificultad": {
+  "velocidadVoz": 1.1,
+  "segundosOrtografia": 10
+ },
  "r1": [
   {
    "q": "Se observa ___ L5-S1 del 15%.",
@@ -26,9 +30,9 @@
    "o": [
     "osteofitario",
     "osteofítario",
-    "osteophitario"
+    "osteófitario"
    ],
-   "nota": "Osteofito viene del griego phyton, pero en español se escribe con f y sin tilde."
+   "nota": "Osteofitario es llana terminada en vocal: no lleva tilde en ninguna sílaba."
   },
   {
    "q": "Se identifica un ___ en el cuerpo vertebral de T9.",
@@ -44,18 +48,18 @@
    "o": [
     "Schmorl",
     "Shmorl",
-    "Schmorll"
+    "Schmörl"
    ],
-   "nota": "Epónimo del patólogo Christian Schmorl: Sch- y una sola l al final."
+   "nota": "Epónimo del patólogo Christian Schmorl: Sch-, sin diéresis."
   },
   {
    "q": "Hiperintensidades compatibles con ___ crónica.",
    "o": [
     "leucoencefalopatía",
     "leucoencefalopatia",
-    "leucoensefalopatía"
+    "leucoencéfalopatía"
    ],
-   "nota": "-patía lleva tilde en la í (hiato): discopatía, adenopatía, leucoencefalopatía."
+   "nota": "-patía lleva tilde en la í (hiato); encefalo- no lleva tilde dentro de la palabra compuesta."
   },
   {
    "q": "Engrosamiento ___ en el antro maxilar derecho.",
@@ -71,7 +75,7 @@
    "o": [
     "mastoideas",
     "mastoídeas",
-    "mastoidéas"
+    "mastóideas"
    ],
    "nota": "Mastoideas es llana terminada en s: sin tilde."
   },
@@ -82,25 +86,16 @@
     "sellar",
     "celar"
    ],
-   "nota": "Selar se refiere a la silla turca (sella turcica): con s y una sola l."
+   "nota": "Selar se refiere a la silla turca (sella turcica). Sellar y celar existen, pero significan otra cosa."
   },
   {
    "q": "Se observa ___ de la arteria vertebral izquierda.",
    "o": [
     "hipoplasia",
     "hipoplacia",
-    "ipoplasia"
+    "hipoplásia"
    ],
-   "nota": "Hipo- lleva h, y -plasia (formación) se escribe con s."
-  },
-  {
-   "q": "Parénquima mamario de tipo ___ disperso.",
-   "o": [
-    "fibroglandular",
-    "fibroglandullar",
-    "fibrograndular"
-   ],
-   "nota": "Fibro + glandular: con l, no con r, y una sola l."
+   "nota": "-plasia (formación) se escribe con s y es llana: sin tilde."
   },
   {
    "q": "Ganglios axilares con centro ___.",
@@ -112,15 +107,6 @@
    "nota": "Radiolúcido (de lúcido) es esdrújula y se escribe con c."
   },
   {
-   "q": "Hallazgos que corresponden a categoría ___ 2.",
-   "o": [
-    "BI-RADS",
-    "BIRRADS",
-    "BI-RAD"
-   ],
-   "nota": "El sistema del ACR se escribe BI-RADS, en mayúsculas y con guion."
-  },
-  {
    "q": "Nódulo de bordes ___ en la base pulmonar izquierda.",
    "o": [
     "espiculados",
@@ -128,15 +114,6 @@
     "espiculádos"
    ],
    "nota": "Espícula lleva tilde, pero espiculados es llana terminada en s: sin tilde."
-  },
-  {
-   "q": "Adenopatía ___ de 28 x 17 mm.",
-   "o": [
-    "subcarinal",
-    "subcarinál",
-    "sucarinal"
-   ],
-   "nota": "Sub + carina: subcarinal, aguda terminada en l, sin tilde."
   },
   {
    "q": "Vejiga ___ con orina residual mínima.",
@@ -161,18 +138,9 @@
    "o": [
     "uncinado",
     "unsinado",
-    "uncinádo"
+    "huncinado"
    ],
-   "nota": "Uncinado (en forma de gancho, del latín uncinus) se escribe con c."
-  },
-  {
-   "q": "Datos de ___ portal con esplenomegalia.",
-   "o": [
-    "hipertensión",
-    "hipertención",
-    "hipertensíon"
-   ],
-   "nota": "Tenso → tensión: con s. La tilde va en la ó."
+   "nota": "Uncinado (en forma de gancho, del latín uncinus) se escribe con c y sin h."
   },
   {
    "q": "Vesícula ___ con lodo biliar en su interior.",
@@ -197,16 +165,16 @@
    "o": [
     "Chilaiditi",
     "Chilaiditti",
-    "Chiladiti"
+    "Chilaidití"
    ],
-   "nota": "Epónimo del radiólogo Demetrius Chilaiditi: una sola t."
+   "nota": "Epónimo del radiólogo Demetrius Chilaiditi: una sola t y sin tilde."
   },
   {
    "q": "Cambios por ___ multinivel.",
    "o": [
     "espondilosis",
     "espondilósis",
-    "espondilocis"
+    "espóndilosis"
    ],
    "nota": "Otra palabra en -osis: llana, con s y sin tilde."
   },
@@ -224,9 +192,9 @@
    "o": [
     "transicional",
     "transiccional",
-    "transisional"
+    "transicionál"
    ],
-   "nota": "Transición → transicional: una sola c."
+   "nota": "Transición → transicional: una sola c, y aguda terminada en l (sin tilde)."
   },
   {
    "q": "Infiltración grasa en la musculatura ___.",
@@ -242,18 +210,18 @@
    "o": [
     "blásticas",
     "blasticas",
-    "vlásticas"
+    "plásticas"
    ],
-   "nota": "Blásticas es esdrújula y se escribe con b."
+   "nota": "Blásticas (formadoras de hueso) lleva b y tilde. Plásticas existe, pero no es el término."
   },
   {
    "q": "Se observa ___ septal a la izquierda.",
    "o": [
     "desviación",
     "desbiación",
-    "desviacion"
+    "desvíación"
    ],
-   "nota": "Desviar → desviación: con v y tilde en la ó."
+   "nota": "Desviar → desviación: con v; la tilde va en la ó, no en la í."
   },
   {
    "q": "Cruce ___ intracanalicular izquierdo.",
@@ -262,7 +230,7 @@
     "neurobascular",
     "neurovasculár"
    ],
-   "nota": "Vascular (de vaso) con v."
+   "nota": "Vascular (de vaso) con v, y aguda terminada en r: sin tilde."
   },
   {
    "q": "Patrón mastográfico ___ denso.",
@@ -290,6 +258,96 @@
     "caraterización"
    ],
    "nota": "Carácter → caracterizar → caracterización: con c antes de la t y con z."
+  },
+  {
+   "q": "Colección hepática compatible con ___.",
+   "o": [
+    "absceso",
+    "acceso",
+    "abceso"
+   ],
+   "nota": "Absceso (colección de pus) lleva bs y sc. Acceso existe, pero significa entrada."
+  },
+  {
+   "q": "Se sugiere correlacionar con los ___ clínicos.",
+   "o": [
+    "hallazgos",
+    "hayazgos",
+    "halazgos"
+   ],
+   "nota": "Hallar → hallazgo: con ll y zg."
+  },
+  {
+   "q": "Páncreas y ___ de tamaño y morfología normales.",
+   "o": [
+    "bazo",
+    "vaso",
+    "baso"
+   ],
+   "nota": "Bazo (órgano) con b y z; vaso (conducto) con v y s."
+  },
+  {
+   "q": "No se observa líquido libre en la cavidad ___.",
+   "o": [
+    "peritoneal",
+    "perineal",
+    "peritonial"
+   ],
+   "nota": "Peritoneal viene de peritoneo; perineal se refiere al periné."
+  },
+  {
+   "q": "Cambios por ___ de los discos intervertebrales.",
+   "o": [
+    "deshidratación",
+    "desidratación",
+    "deshidratasión"
+   ],
+   "nota": "Des + hidratar: se conserva la h de hidratación."
+  },
+  {
+   "q": "Pequeño quiste ___ articular en L4-L5.",
+   "o": [
+    "sinovial",
+    "sinobial",
+    "sinovíal"
+   ],
+   "nota": "Sinovia → sinovial: con v, y sin tilde (aguda terminada en l)."
+  },
+  {
+   "q": "Discreta ___ de la silla turca.",
+   "o": [
+    "amplitud",
+    "anplitud",
+    "amplitúd"
+   ],
+   "nota": "Antes de p se escribe m: amplitud. Aguda terminada en d: sin tilde."
+  },
+  {
+   "q": "Rectificación de la ___ lumbar.",
+   "o": [
+    "lordosis",
+    "lordósis",
+    "lordocis"
+   ],
+   "nota": "Lordosis: llana terminada en s, sin tilde, con s."
+  },
+  {
+   "q": "Nódulos circunscritos, ___ al tejido glandular.",
+   "o": [
+    "isodensos",
+    "isodenzos",
+    "isodénsos"
+   ],
+   "nota": "Iso + denso: isodensos, con s y sin tilde."
+  },
+  {
+   "q": "Ganglios de morfología ___ con centro radiolúcido.",
+   "o": [
+    "reniforme",
+    "reniformé",
+    "reniphorme"
+   ],
+   "nota": "Reniforme (en forma de riñón) es llana terminada en vocal: sin tilde."
   }
  ],
  "r2": [

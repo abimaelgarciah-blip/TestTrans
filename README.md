@@ -18,7 +18,7 @@ Reglas de producto:
 
 | Ronda | Mecánica | Tiempo | Puntos |
 |---|---|---|---|
-| Ortografía relámpago | 10 frases con hueco y tres opciones | 12 s por frase | 10 por acierto |
+| Ortografía relámpago | 10 frases con hueco y tres opciones | 10 s por frase (configurable) | 10 por acierto |
 | Dictado | 3 audios, máximo dos reproducciones | Libre | 30 + 30 + 40 por precisión |
 | Caza errores | Reporte con 6 errores ocultos | 90–100 s | 100/6 por acierto, −8 por falso positivo |
 | Memoria | 2 frases que se muestran y desaparecen | 8 s y 12 s | 40 + 60 por precisión |
@@ -168,6 +168,10 @@ mismo y deben tener dificultad parecida, para que la competencia siga siendo jus
      (vaso/bazo, íleon/ilion, absceso/acceso…).
    - `r4`: posiciones como en `r2`, cada frase con `t`, `seg` y `pts` (suman 100).
    - `r5`: al menos 10 términos distintos, preferentemente con acentos.
+   - `dificultad`: ajustes opcionales. `velocidadVoz` es la velocidad de la síntesis de voz del
+     dictado (1 = normal; entre 0.7 y 1.5; los audios grabados suenan a su ritmo natural) y
+     `segundosOrtografia` es el tiempo por frase en ortografía (entre 6 y 20). Sin el bloque se usan
+     1 y 12. Las ediciones actuales usan 1.1 y 10.
    - `consejos`: lista opcional de datos breves de ortografía que se muestran en la portada y al
      terminar cada ronda.
 3. Agrega el id a `ediciones/index.json`.
@@ -185,7 +189,7 @@ está en `VARIANTES_ACEPTADAS` de `src/calificacion.js`.
 ## Grabar los audios del dictado
 
 El audio grabado es el modo preferido: suena igual en todos los equipos y permite un ritmo real con
-muletillas. Si un dictado no trae `audio`, se usa síntesis de voz (`es-MX`, velocidad 0.9), que varía
+muletillas. Si un dictado no trae `audio`, se usa síntesis de voz (`es-MX`, con la velocidad de `dificultad.velocidadVoz`), que varía
 entre sistemas y falta en algunos navegadores.
 
 1. Graba a un médico del equipo leyendo el texto de `di` **inventado**, con la autocorrección incluida.

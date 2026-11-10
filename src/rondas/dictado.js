@@ -32,7 +32,7 @@ export function jugar(contenedor, datos, terminar) {
     const item = items[indice];
     const ultimo = indice === items.length - 1;
     const campo = campoTexto({ multilinea: true, rows: 5, id: 'dictado-campo', clase: 'campo-largo' });
-    const reproductor = crearReproductor(item);
+    const reproductor = crearReproductor(item, { velocidad: datos.dificultad?.velocidadVoz ?? 1 });
     const siguiente = el('button', { type: 'button', clase: 'primario', onClick: avanzar },
       ultimo ? 'Terminar ronda' : 'Siguiente dictado');
 

@@ -6,14 +6,15 @@ export const id = 'r1';
 export const titulo = 'Ortografía relámpago';
 export const icono = '🔤';
 export const lema = 'Elige la palabra bien escrita antes de que se acabe el tiempo.';
-export const SEGUNDOS_POR_FRASE = 12;
 const PAUSA_RESPUESTA_MS = 1100;
+
+const segundos = (datos) => datos.dificultad?.segundosOrtografia ?? 12;
 
 export function instrucciones(datos) {
   return [
     `Verás ${datos.r1.length} frases médicas con un hueco y tres opciones. Solo una está bien escrita.`,
     'Elige con el ratón o con las teclas 1, 2 y 3.',
-    `Tienes ${SEGUNDOS_POR_FRASE} segundos por frase. Si se acaba el tiempo cuenta como error.`,
+    `Tienes ${segundos(datos)} segundos por frase. Si se acaba el tiempo cuenta como error.`,
     'Cada acierto vale 10 puntos. Al final verás la regla de cada palabra que fallaste.',
   ];
 }
@@ -60,7 +61,7 @@ export function jugar(contenedor, datos, terminar) {
     botones = p.opciones.map((opcion, i) => el('button', {
       type: 'button', clase: 'opcion', 'data-opcion': opcion, onClick: (e) => responder(e.currentTarget),
     }, el('span', { clase: 'tecla', 'aria-hidden': 'true' }, String(i + 1)), el('span', { clase: 'opcion-texto' }, opcion)));
-    cuenta = crearCuentaRegresiva(SEGUNDOS_POR_FRASE, () => responder(null));
+    cuenta = crearCuentaRegresiva(segundos(datos), () => responder(null));
     const tarjeta = el('div', { clase: 'tarjeta-frase entrar' },
       el('p', { clase: 'frase' }, antes, el('span', { clase: 'hueco', 'aria-label': 'hueco' }, '_____'), despues));
     reemplazar(zona,

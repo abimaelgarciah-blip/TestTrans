@@ -10,6 +10,14 @@
 
 export const FRASES_ORTOGRAFIA = 10;
 
+/**
+ * Ajustes de dificultad que cada edición puede cambiar en su bloque "dificultad".
+ *   velocidadVoz: velocidad de la síntesis de voz del dictado (1 = normal del sistema).
+ *   segundosOrtografia: tiempo por frase en ortografía relámpago.
+ */
+export const DIFICULTAD_POR_DEFECTO = Object.freeze({ velocidadVoz: 1, segundosOrtografia: 12 });
+export const LIMITES_DIFICULTAD = Object.freeze({ velocidadVoz: [0.7, 1.5], segundosOrtografia: [6, 20] });
+
 /** Copia barajada (Fisher–Yates). */
 export function barajar(lista, aleatorio = Math.random) {
   const copia = [...lista];
@@ -52,5 +60,6 @@ export function prepararExamen(ed, aleatorio = Math.random) {
     r4: ed.r4.map((p) => elegir(alternativas(p), aleatorio)),
     r5: [...ed.r5],
     consejos: Array.isArray(ed.consejos) ? barajar(ed.consejos, aleatorio) : [],
+    dificultad: { ...DIFICULTAD_POR_DEFECTO, ...(ed.dificultad ?? {}) },
   };
 }

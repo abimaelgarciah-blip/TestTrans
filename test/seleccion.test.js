@@ -32,6 +32,12 @@ describe('sorteo del examen', () => {
     assert.deepEqual(alternativas([1, 2]), [1, 2]);
   });
 
+  it('aplica los ajustes de dificultad de la edición sobre los valores por defecto', () => {
+    const ed = leer('../ediciones/2026-11.json');
+    assert.deepEqual(prepararExamen({ ...ed, dificultad: undefined }).dificultad, { velocidadVoz: 1, segundosOrtografia: 12 });
+    assert.deepEqual(prepararExamen({ ...ed, dificultad: { velocidadVoz: 1.2 } }).dificultad, { velocidadVoz: 1.2, segundosOrtografia: 12 });
+  });
+
   for (const id of indice.ediciones) {
     const ed = leer(`../ediciones/${id}.json`);
 

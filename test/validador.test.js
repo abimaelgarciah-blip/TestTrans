@@ -108,6 +108,17 @@ describe('validador de ediciones', () => {
     assert.ok(errores.some((e) => e.startsWith('r1[3]')));
   });
 
+  it('valida los ajustes de dificultad', () => {
+    const ed = copia(base);
+    ed.dificultad = { velocidadVoz: 1.1, segundosOrtografia: 10 };
+    assert.deepEqual(validarEdicion(ed), []);
+    ed.dificultad = { velocidadVoz: 3, segundosOrtografia: 2, turbo: true };
+    const errores = validarEdicion(ed);
+    assert.ok(errores.some((e) => e.startsWith('dificultad.velocidadVoz')));
+    assert.ok(errores.some((e) => e.startsWith('dificultad.segundosOrtografia')));
+    assert.ok(errores.some((e) => e.startsWith('dificultad.turbo')));
+  });
+
   it('rechaza términos repetidos en r5', () => {
     const ed = copia(base);
     ed.r5.push(ed.r5[0].toUpperCase());

@@ -13,7 +13,7 @@ import {
   palabrasCrudas,
   parsearCazaErrores,
 } from './calificacion.js';
-import { FRASES_ORTOGRAFIA, alternativas } from './seleccion.js';
+import { DIFICULTAD_POR_DEFECTO, FRASES_ORTOGRAFIA, LIMITES_DIFICULTAD, alternativas } from './seleccion.js';
 
 const ID_EDICION = /^\d{4}-(0[1-9]|1[0-2])$/;
 export { FRASES_ORTOGRAFIA };
@@ -172,6 +172,20 @@ export function validarEdicion(ed) {
     const normalizados = ed.r5.map(normalizarTermino);
     const repetidos = normalizados.filter((t, i) => normalizados.indexOf(t) !== i);
     if (repetidos.length) errores.push(`r5: términos repetidos (${[...new Set(repetidos)].join(', ')}).`);
+  }
+
+  if (ed.dificultad !== undefined) {
+    if (!ed.dificultad || typeof ed.dificultad !== 'object' || Array.isArray(ed.dificultad)) {
+      errores.push('dificultad: debe ser un objeto.');
+    } else {
+      for (const [clave, valor] of Object.entries(ed.dificultad)) {
+        if (!(clave in DIFICULTAD_POR_DEFECTO)) { errores.push(`dificultad.${clave}: ajuste desconocido.`); continue; }
+        const [min, max] = LIMITES_DIFICULTAD[clave];
+        if (typeof valor !== 'number' || !(valor >= min && valor <= max)) {
+          errores.push(`dificultad.${clave}: debe ser un número entre ${min} y ${max}.`);
+        }
+      }
+    }
   }
 
   if (ed.consejos !== undefined && (!Array.isArray(ed.consejos) || !ed.consejos.every(esTexto))) {
