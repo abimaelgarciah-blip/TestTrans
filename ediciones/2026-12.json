@@ -1,50 +1,415 @@
 {
-  "id": "2026-12",
-  "titulo": "Diciembre 2026",
-  "r1": [
-    { "q": "Se observa ___ pleural derecho de pequeña cuantía.", "o": ["derrame", "derame", "derramme"] },
-    { "q": "Glándula tiroides con nódulo ___ en el lóbulo izquierdo.", "o": ["hipoecoico", "hipoecóico", "hipoecoíco"] },
-    { "q": "Silueta cardiaca sin datos de ___.", "o": ["cardiomegalia", "cardiomegália", "cardiomejalia"] },
-    { "q": "Se observa ___ laminar en el lóbulo medio.", "o": ["atelectasia", "atelestasia", "atelectacia"] },
-    { "q": "Patrón ___ bilateral de predominio basal.", "o": ["intersticial", "insterticial", "intersticíal"] },
-    { "q": "Imagen sugestiva de ___ en la base izquierda.", "o": ["neumonía", "neumonia", "neumunía"] },
-    { "q": "Estructuras óseas sin ___ aparentes.", "o": ["alteraciones", "alteraziones", "alterasiones"] },
-    { "q": "Se recomienda ___ por imagen.", "o": ["seguimiento", "siguimiento", "seguimíento"] },
-    { "q": "Nódulo con ___ gruesas en su interior.", "o": ["calcificaciones", "calsificaciones", "calcificasiones"] },
-    { "q": "Ensanchamiento del ___ superior.", "o": ["mediastino", "mediastíno", "mediastimo"] }
-  ],
-  "r2": [
-    {
-      "di": "Campos pulmonares bien ventilados. Silueta cardiaca de tamaño normal. Ángulos costofrénicos libres.",
-      "es": "Campos pulmonares bien ventilados. Silueta cardiaca de tamaño normal. Ángulos costofrénicos libres.",
-      "pts": 30
-    },
-    {
-      "di": "Glándula tiroides con un nódulo sólido de ocho milímetros en el lóbulo derecho, sin calcificaciones.",
-      "es": "Glándula tiroides con un nódulo sólido de 8 milímetros en el lóbulo derecho, sin calcificaciones.",
-      "pts": 30
-    },
-    {
-      "di": "Se observa derrame pleural izquierdo, no, perdón, derrame pleural derecho, de pequeña cuantía, con atelectasia pasiva del lóbulo inferior.",
-      "es": "Se observa derrame pleural derecho, de pequeña cuantía, con atelectasia pasiva del lóbulo inferior.",
-      "pts": 40,
-      "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
-    }
-  ],
-  "r3": {
-    "seg": 90,
-    "texto": "TOMOGRAFÍA DE ABDOMEN Y PELVIS. Hígado con lesión hipodenza{hipodensa} de 12 cm{mm} en el segmento VI, compatible con quiste simple. Vesícula biliar y vías biliares sin alteraciones. Apendice{Apéndice} de 11 mm de diámetro, con colección adyacente en fosa ilíaca derecha compatible con acceso{absceso}. Engrosamiento de la pared del ilion{íleon} terminal. Riñones de forma y tamaño normales. CONCLUSIÓN: apendicitis complicada con absceso en fosa ilíaca izquierda{derecha}."
+ "id": "2026-12",
+ "titulo": "Diciembre 2026",
+ "tema": "Tórax, tiroides, rodilla, hombro, hígado y obstetricia",
+ "r1": [
+  {
+   "q": "Se observa ___ pleural derecho de pequeña cuantía.",
+   "o": [
+    "derrame",
+    "derame",
+    "derramme"
+   ],
+   "nota": "Derrame lleva rr: entre vocales, el sonido fuerte se escribe con doble r."
   },
-  "r4": [
-    { "t": "Nódulo tiroideo sólido de 8 mm en el lóbulo derecho, sin calcificaciones.", "seg": 8, "pts": 40 },
-    { "t": "Derrame pleural derecho de pequeña cuantía con atelectasia pasiva del lóbulo inferior; silueta cardiaca normal.", "seg": 12, "pts": 60 }
+  {
+   "q": "Glándula tiroides con nódulo ___ en el lóbulo izquierdo.",
+   "o": [
+    "hipoecoico",
+    "hipoecóico",
+    "hipoecoíco"
+   ],
+   "nota": "El diptongo oi de hipoecoico no lleva tilde."
+  },
+  {
+   "q": "Silueta cardiaca sin datos de ___.",
+   "o": [
+    "cardiomegalia",
+    "cardiomegália",
+    "cardiomejalia"
+   ],
+   "nota": "Cardiomegalia es llana terminada en vocal: sin tilde, y -megalia con g."
+  },
+  {
+   "q": "Se observa ___ laminar en el lóbulo medio.",
+   "o": [
+    "atelectasia",
+    "atelestasia",
+    "atelectacia"
+   ],
+   "nota": "Atelectasia: a + telos + ectasis, con ct y s."
+  },
+  {
+   "q": "Patrón ___ bilateral de predominio basal.",
+   "o": [
+    "intersticial",
+    "insterticial",
+    "intersticíal"
+   ],
+   "nota": "Intersticio → intersticial, con c y sin tilde."
+  },
+  {
+   "q": "Imagen sugestiva de ___ en la base izquierda.",
+   "o": [
+    "neumonía",
+    "neumonia",
+    "neumunía"
+   ],
+   "nota": "Neumonía lleva tilde en la í para romper el diptongo (hiato)."
+  },
+  {
+   "q": "Estructuras óseas sin ___ aparentes.",
+   "o": [
+    "alteraciones",
+    "alteraziones",
+    "alterasiones"
+   ],
+   "nota": "Alterar → alteración → alteraciones: con c."
+  },
+  {
+   "q": "Se recomienda ___ por imagen.",
+   "o": [
+    "seguimiento",
+    "siguimiento",
+    "seguimíento"
+   ],
+   "nota": "Viene de seguir: seguimiento, con e en la primera sílaba."
+  },
+  {
+   "q": "Nódulo con ___ gruesas en su interior.",
+   "o": [
+    "calcificaciones",
+    "calsificaciones",
+    "calcificasiones"
+   ],
+   "nota": "Calcificar → calcificación: c en ambas sílabas."
+  },
+  {
+   "q": "Ensanchamiento del ___ superior.",
+   "o": [
+    "mediastino",
+    "mediastíno",
+    "mediastimo"
+   ],
+   "nota": "Mediastino es llana terminada en vocal: sin tilde."
+  },
+  {
+   "q": "Tendinopatía del ___ con desgarro parcial.",
+   "o": [
+    "supraespinoso",
+    "supraespinozo",
+    "supraespinóso"
+   ],
+   "nota": "Espina → espinoso: el sufijo -oso se escribe con s."
+  },
+  {
+   "q": "Bursitis ___ subdeltoidea.",
+   "o": [
+    "subacromial",
+    "subcromial",
+    "subacrómial"
+   ],
+   "nota": "Sub + acromion: subacromial, sin tilde (aguda terminada en l)."
+  },
+  {
+   "q": "Condromalacia ___ grado II.",
+   "o": [
+    "rotuliana",
+    "rotulliana",
+    "rotuliána"
+   ],
+   "nota": "De rótula: rotuliana, con una sola l y sin tilde."
+  },
+  {
+   "q": "Menisco medial con ruptura ___ del cuerno posterior.",
+   "o": [
+    "horizontal",
+    "orizontal",
+    "horisontal"
+   ],
+   "nota": "Horizonte → horizontal: con h y con z."
+  },
+  {
+   "q": "Nódulo ___ de 8 mm en el lóbulo derecho.",
+   "o": [
+    "isoecoico",
+    "isoecóico",
+    "isohecoico"
+   ],
+   "nota": "Iso + eco: isoecoico, sin h intercalada y sin tilde."
+  },
+  {
+   "q": "Nódulo tiroideo clasificado como ___ 3.",
+   "o": [
+    "TI-RADS",
+    "TIRRADS",
+    "TI-RAD"
+   ],
+   "nota": "El sistema del ACR para tiroides se escribe TI-RADS, con guion."
+  },
+  {
+   "q": "Hígado con ___ grado I.",
+   "o": [
+    "esteatosis",
+    "esteatósis",
+    "estiatosis"
+   ],
+   "nota": "Esteatosis (grasa) es llana terminada en s: sin tilde."
+  },
+  {
+   "q": "Vesícula biliar con ___ múltiple.",
+   "o": [
+    "colelitiasis",
+    "colelitíasis",
+    "colelitiacis"
+   ],
+   "nota": "Las palabras en -iasis son llanas terminadas en s: colelitiasis, sin tilde."
+  },
+  {
+   "q": "Embarazo ___ de 12 semanas.",
+   "o": [
+    "intrauterino",
+    "intraúterino",
+    "intrahuterino"
+   ],
+   "nota": "Intra + uterino: sin h y sin tilde."
+  },
+  {
+   "q": "Líquido ___ en cantidad normal.",
+   "o": [
+    "amniótico",
+    "amniotico",
+    "anmiótico"
+   ],
+   "nota": "Amnios → amniótico: mn, y tilde por ser esdrújula."
+  },
+  {
+   "q": "Engrosamiento de la ___ plantar.",
+   "o": [
+    "fascia",
+    "facia",
+    "fasia"
+   ],
+   "nota": "Fascia (membrana fibrosa) se escribe con sc."
+  },
+  {
+   "q": "Quiste de ___ en el hueco poplíteo.",
+   "o": [
+    "Baker",
+    "Beiker",
+    "Backer"
+   ],
+   "nota": "Epónimo del cirujano William Baker: se escribe Baker."
+  },
+  {
+   "q": "Se descarta ___ venosa profunda.",
+   "o": [
+    "trombosis",
+    "trombósis",
+    "tronbosis"
+   ],
+   "nota": "Antes de b se escribe m: trombosis. Llana en s, sin tilde."
+  },
+  {
+   "q": "Ateromatosis ___ calcificada.",
+   "o": [
+    "aórtica",
+    "aortica",
+    "aórtíca"
+   ],
+   "nota": "Aórtica es esdrújula: tilde en la ó."
+  },
+  {
+   "q": "Contusión ___ en el cóndilo femoral lateral.",
+   "o": [
+    "ósea",
+    "osea",
+    "óssea"
+   ],
+   "nota": "Ósea es esdrújula: lleva tilde."
+  },
+  {
+   "q": "Ángulos ___ libres.",
+   "o": [
+    "costofrénicos",
+    "costofrenicos",
+    "costofrénícos"
+   ],
+   "nota": "Costofrénicos es esdrújula: una sola tilde, en la é."
+  }
+ ],
+ "r2": [
+  [
+   {
+    "di": "Campos pulmonares bien ventilados. Silueta cardiaca de tamaño normal. Ángulos costofrénicos libres.",
+    "es": "Campos pulmonares bien ventilados. Silueta cardiaca de tamaño normal. Ángulos costofrénicos libres.",
+    "pts": 30
+   },
+   {
+    "di": "Hígado de forma y tamaño normales, con ecogenicidad homogénea. Vesícula biliar sin litos ni engrosamiento de pared.",
+    "es": "Hígado de forma y tamaño normales, con ecogenicidad homogénea. Vesícula biliar sin litos ni engrosamiento de pared.",
+    "pts": 30
+   },
+   {
+    "di": "Tendón del supraespinoso con engrosamiento y desgarro parcial de su cara articular. Bursitis subacromial subdeltoidea.",
+    "es": "Tendón del supraespinoso con engrosamiento y desgarro parcial de su cara articular. Bursitis subacromial subdeltoidea.",
+    "pts": 30
+   }
   ],
-  "r5": [
-    "neumotórax", "atelectasia", "cardiomegalia", "mediastino", "tráquea",
-    "bronquiectasia", "enfisema", "hemitórax", "clavícula", "esternón",
-    "diafragma", "íleon", "apendicitis", "tiroides", "glándula",
-    "nódulo", "pericardio", "aórtico", "neumonía", "costofrénico",
-    "parénquima", "intersticial", "calcificación", "tomografía", "radiografía",
-    "bronquiolitis", "pleuresía", "hilio", "lóbulo", "cuantía"
+  [
+   {
+    "di": "Glándula tiroides con un nódulo sólido de ocho milímetros en el lóbulo derecho, sin calcificaciones.",
+    "es": "Glándula tiroides con un nódulo sólido de 8 milímetros en el lóbulo derecho, sin calcificaciones.",
+    "pts": 30
+   },
+   {
+    "di": "Embarazo intrauterino de doce semanas, con frecuencia cardiaca fetal normal y líquido amniótico adecuado.",
+    "es": "Embarazo intrauterino de 12 semanas, con frecuencia cardiaca fetal normal y líquido amniótico adecuado.",
+    "pts": 30
+   },
+   {
+    "di": "Quiste de Baker de veinticinco milímetros en el hueco poplíteo, sin datos de ruptura.",
+    "es": "Quiste de Baker de 25 milímetros en el hueco poplíteo, sin datos de ruptura.",
+    "pts": 30
+   }
+  ],
+  [
+   {
+    "di": "Se observa derrame pleural izquierdo, no, perdón, derrame pleural derecho, de pequeña cuantía, con atelectasia pasiva del lóbulo inferior.",
+    "es": "Se observa derrame pleural derecho, de pequeña cuantía, con atelectasia pasiva del lóbulo inferior.",
+    "pts": 40,
+    "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+   },
+   {
+    "di": "Ruptura horizontal del menisco lateral, no, perdón, del menisco medial, en su cuerno posterior, con derrame articular leve.",
+    "es": "Ruptura horizontal del menisco medial, en su cuerno posterior, con derrame articular leve.",
+    "pts": 40,
+    "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+   },
+   {
+    "di": "Esteatosis hepática grado dos, no, perdón, grado uno, sin lesiones focales. La vía biliar es de calibre normal.",
+    "es": "Esteatosis hepática grado 1, sin lesiones focales. La vía biliar es de calibre normal.",
+    "pts": 40,
+    "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+   }
   ]
+ ],
+ "r3": [
+  {
+   "seg": 100,
+   "titulo": "Tomografía de abdomen y pelvis",
+   "texto": "TOMOGRAFÍA DE ABDOMEN Y PELVIS. Hígado con lesión hipodenza{hipodensa|Denso → densa: con s.} de 12 cm{mm|Un quiste hepático simple de 12 cm sería un hallazgo mayor; aquí son milímetros.} en el segmento VI, compatible con quiste simple. Vesícula biliar y vías biliares sin alteraciones. Apendice{Apéndice|Apéndice es esdrújula: lleva tilde.} de 11 mm de diámetro, con colección adyacente en fosa ilíaca derecha compatible con acceso{absceso|Absceso es una colección de pus; acceso es una entrada o un ataque.}. Engrosamiento de la pared del ilion{íleon|El íleon es parte del intestino delgado; el ilion es un hueso de la pelvis.} terminal. Riñones de forma y tamaño normales. CONCLUSIONES: apendicitis complicada con absceso en fosa ilíaca izquierda{derecha|La colección se describió en la fosa ilíaca derecha.}."
+  },
+  {
+   "seg": 100,
+   "titulo": "Resonancia de rodilla",
+   "texto": "RESONANCIA MAGNÉTICA DE RODILLA DERECHA. Derrame articular leve. Ligamento cruzado anterior íntegro. Menisco medial con ruptura orisontal{horizontal|Horizontal se escribe con h y con z.} del cuerno posterior que alcanza la superficie articular. Menisco lateral sin alteraciones. Condromalacia rotuliana grado II. Contusión ósea en el cóndilo femoral lateral. Quiste de Baker de 25 cm{mm|Un quiste de Baker de 25 cm sería enorme; se mide en milímetros.} en el hueco popliteo{poplíteo|Poplíteo es esdrújula: lleva tilde.}. Tendones rotuliano y cuadricipital normales. CONCLUSIONES: ruptura horizontal del menisco lateral{medial|La ruptura se describió en el menisco medial.}. Condromalacia rotuliana. Contusión ósea en el cóndilo femoral medial{lateral|La contusión se describió en el cóndilo lateral.}. Quiste de Baker en rodilla izquierda{derecha|El estudio es de la rodilla derecha.}."
+  },
+  {
+   "seg": 100,
+   "titulo": "Ultrasonido de tiroides",
+   "texto": "ULTRASONIDO DE TIROIDES. Glándula tiroides de forma y tamaño normales, con ecotextura homogénea. En el lóbulo derecho se identifica un nódulo sólido isoecoico de 8 cm{mm|La conclusión habla de 8 mm; un nódulo de 8 cm ocuparía todo el lóbulo.}, de bordes bien definidos, sin calcificaciones. Lóbulo isquierdo{izquierdo|Izquierdo se escribe con z.} sin nódulos. Istmo de grosor normal. Glándulas paratifoides{paratiroides|La fiebre paratifoidea es una infección; las glándulas son paratiroides.} no visibles. Vascularidad periférica al Doppler colór{color|Color es aguda terminada en r: no lleva tilde.}. No se observan adenopatías cervicales. CONCLUSIONES: nódulo sólido en el lóbulo izquierdo{derecho|El nódulo se describió en el lóbulo derecho.} de 8 mm, clasificación TI-RADS 3. Se sugiere seguimiento ecográfico en 12 meces{meses|Meses se escribe con s.}."
+  }
+ ],
+ "r4": [
+  [
+   {
+    "t": "Nódulo tiroideo sólido de 8 mm en el lóbulo derecho, sin calcificaciones.",
+    "seg": 8,
+    "pts": 40
+   },
+   {
+    "t": "Ruptura horizontal del cuerno posterior del menisco medial.",
+    "seg": 8,
+    "pts": 40
+   },
+   {
+    "t": "Esteatosis hepática grado I sin lesiones focales.",
+    "seg": 8,
+    "pts": 40
+   },
+   {
+    "t": "Quiste de Baker de 25 mm en el hueco poplíteo.",
+    "seg": 8,
+    "pts": 40
+   }
+  ],
+  [
+   {
+    "t": "Derrame pleural derecho de pequeña cuantía con atelectasia pasiva del lóbulo inferior; silueta cardiaca normal.",
+    "seg": 12,
+    "pts": 60
+   },
+   {
+    "t": "Tendinopatía del supraespinoso con desgarro parcial de su cara articular y bursitis subacromial subdeltoidea.",
+    "seg": 12,
+    "pts": 60
+   },
+   {
+    "t": "Embarazo intrauterino de 12 semanas con frecuencia cardiaca fetal normal y líquido amniótico adecuado.",
+    "seg": 12,
+    "pts": 60
+   },
+   {
+    "t": "Colelitiasis múltiple sin datos de colecistitis aguda; colédoco de calibre normal y páncreas sin alteraciones.",
+    "seg": 12,
+    "pts": 60
+   }
+  ]
+ ],
+ "r5": [
+  "neumotórax",
+  "atelectasia",
+  "cardiomegalia",
+  "mediastino",
+  "tráquea",
+  "bronquiectasia",
+  "enfisema",
+  "hemitórax",
+  "clavícula",
+  "esternón",
+  "diafragma",
+  "íleon",
+  "apendicitis",
+  "tiroides",
+  "glándula",
+  "nódulo",
+  "pericardio",
+  "aórtico",
+  "neumonía",
+  "costofrénico",
+  "parénquima",
+  "intersticial",
+  "calcificación",
+  "tomografía",
+  "radiografía",
+  "bronquiolitis",
+  "pleuresía",
+  "hilio",
+  "lóbulo",
+  "cuantía",
+  "supraespinoso",
+  "subacromial",
+  "rotuliana",
+  "menisco",
+  "poplíteo",
+  "isoecoico",
+  "paratiroides",
+  "amniótico",
+  "intrauterino",
+  "colelitiasis",
+  "esteatosis",
+  "trombosis"
+ ],
+ "consejos": [
+  "Íleon (intestino) e ilion (hueso de la pelvis) son parónimos: una tilde y una letra cambian el órgano.",
+  "Absceso es una colección de pus; acceso es una entrada. En reportes casi siempre es absceso.",
+  "Las palabras en -iasis (colelitiasis, nefrolitiasis) son llanas terminadas en s: sin tilde.",
+  "En rodilla, revisa que menisco y cóndilo (medial o lateral) coincidan entre hallazgos y conclusiones.",
+  "Antes de b y p se escribe m: trombosis, ampolla, embolia.",
+  "Las esdrújulas siempre llevan tilde: poplíteo, amniótico, apéndice, tráquea.",
+  "Cardiaca y cardíaca son correctas: la RAE acepta ambas formas.",
+  "Paratiroides son glándulas; paratifoidea es una fiebre infecciosa.",
+  "Cuando el médico se corrige («no, perdón…»), transcribe solo la versión final."
+ ]
 }

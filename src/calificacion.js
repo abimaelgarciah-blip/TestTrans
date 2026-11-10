@@ -7,17 +7,33 @@
  * con letra que no esté aquí, el validador de ediciones la rechaza (y la prueba falla).
  */
 export const NUMEROS = Object.freeze({
-  tres: '3',
-  siete: '7',
-  ocho: '8',
-  doce: '12',
-  quince: '15',
+  uno: '1', dos: '2', tres: '3', cuatro: '4', cinco: '5', seis: '6', siete: '7', ocho: '8',
+  nueve: '9', diez: '10', once: '11', doce: '12', trece: '13', catorce: '14', quince: '15',
+  dieciséis: '16', dieciseis: '16', diecisiete: '17', dieciocho: '18', diecinueve: '19',
+  veinte: '20', veintiuno: '21', veintidós: '22', veintidos: '22', veintitrés: '23', veintitres: '23',
+  veinticuatro: '24', veinticinco: '25', veintiséis: '26', veintiseis: '26', veintisiete: '27',
+  veintiocho: '28', veintinueve: '29', treinta: '30', cuarenta: '40', cincuenta: '50', cien: '100',
+});
+
+/**
+ * Palabras con dos grafías aceptadas por la RAE. Se igualan antes de comparar para que
+ * escribir la otra forma correcta no cueste puntos en dictado ni memoria.
+ */
+export const VARIANTES_ACEPTADAS = Object.freeze({
+  cardíaca: 'cardiaca', cardíaco: 'cardiaco', cardíacas: 'cardiacas', cardíacos: 'cardiacos',
+  ilíaca: 'iliaca', ilíaco: 'iliaco', ilíacas: 'iliacas', ilíacos: 'iliacos',
+  sacroilíaca: 'sacroiliaca', sacroilíacas: 'sacroiliacas',
+  aréola: 'areola', médula: 'medula', período: 'periodo',
+  postquirúrgico: 'posquirúrgico', postquirúrgicos: 'posquirúrgicos',
+  postquirúrgica: 'posquirúrgica', postquirúrgicas: 'posquirúrgicas',
+  postmiccional: 'posmiccional', post: 'pos',
 });
 
 /**
  * Palabras numéricas del español que el validador sabe reconocer. Sirve solo para
- * detectar números con letra que falten en NUMEROS. Se excluyen "un", "una" y "uno"
- * porque casi siempre funcionan como artículo ("un quiste", "una lesión").
+ * detectar números con letra que falten en NUMEROS. Se excluyen "un" y "una" porque casi
+ * siempre funcionan como artículo ("un quiste", "una lesión"), y "medio"/"media" porque en
+ * los reportes suelen ser adjetivos ("tercio medio", "línea media").
  */
 export const PALABRAS_NUMERO = new Set([
   'cero', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez',
@@ -27,7 +43,7 @@ export const PALABRAS_NUMERO = new Set([
   'veintisiete', 'veintiocho', 'veintinueve', 'treinta', 'cuarenta', 'cincuenta',
   'sesenta', 'setenta', 'ochenta', 'noventa', 'cien', 'ciento', 'doscientos',
   'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos',
-  'ochocientos', 'novecientos', 'mil', 'medio', 'media',
+  'ochocientos', 'novecientos', 'mil',
 ]);
 
 const NO_ALFANUMERICO = /[^\p{L}\p{M}\p{N}]+/gu;
@@ -42,9 +58,12 @@ export function palabrasCrudas(texto) {
   return normalizarTexto(texto).replace(NO_ALFANUMERICO, ' ').trim().split(' ').filter(Boolean);
 }
 
-/** Pasos 1 a 3: palabras listas para comparar, con números en letra convertidos a dígitos. */
+/**
+ * Pasos 1 a 3: palabras listas para comparar, con números en letra convertidos a dígitos
+ * y las grafías dobles aceptadas unificadas.
+ */
 export function palabras(texto) {
-  return palabrasCrudas(texto).map((p) => NUMEROS[p] ?? p);
+  return palabrasCrudas(texto).map((p) => NUMEROS[p] ?? VARIANTES_ACEPTADAS[p] ?? p);
 }
 
 /** Paso 4: distancia de Levenshtein entre dos listas (aquí, listas de palabras). */
@@ -116,17 +135,20 @@ const TOKEN_CAZA = /([\p{L}\p{M}\p{N}]+)(?:\{([^{}]*)\})?|([^\p{L}\p{M}\p{N}]+)/
 
 /**
  * Convierte el texto de r3 en segmentos. Una palabra seguida de {corrección} es un error.
- * @returns {{tipo: 'palabra'|'separador', texto: string, correccion?: string|null, indice?: number}[]}
+ * La marca admite una explicación opcional para la revisión: vaso{bazo|El bazo es el órgano}.
+ * @returns {{tipo: 'palabra'|'separador', texto: string, correccion?: string|null, explicacion?: string, indice?: number}[]}
  */
 export function parsearCazaErrores(texto) {
   const segmentos = [];
   let indice = 0;
   for (const m of String(texto ?? '').normalize('NFC').matchAll(TOKEN_CAZA)) {
     if (m[1] !== undefined) {
+      const [correccion, ...explicacion] = m[2] !== undefined ? m[2].split('|') : [];
       segmentos.push({
         tipo: 'palabra',
         texto: m[1],
-        correccion: m[2] !== undefined ? m[2].trim() : null,
+        correccion: correccion !== undefined ? correccion.trim() : null,
+        explicacion: explicacion.join('|').trim(),
         indice: indice++,
       });
     } else {

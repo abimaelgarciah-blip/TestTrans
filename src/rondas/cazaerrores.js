@@ -1,14 +1,16 @@
 // Ronda 3 — Caza errores: un reporte con 6 errores ocultos; se marcan las palabras equivocadas.
 import { PENALIZACION_FALSO_POSITIVO, erroresCazaErrores, evaluarCazaErrores, parsearCazaErrores } from '../calificacion.js';
-import { crearCuentaRegresiva, el, reemplazar } from '../ui.js';
+import { animar, crearCuentaRegresiva, el, reemplazar } from '../ui.js';
 
 export const id = 'r3';
 export const titulo = 'Caza errores';
+export const icono = '🔍';
+export const lema = 'Revisa el reporte como lo haría un médico exigente.';
 
 export function instrucciones(datos) {
   const n = erroresCazaErrores(parsearCazaErrores(datos.r3.texto)).length;
   return [
-    `Verás un reporte con ${n} errores ocultos: ortografía, unidades, lateralidad contradictoria y palabras parecidas que cambian el sentido (como vaso y bazo).`,
+    `Verás un reporte con ${n} errores ocultos: ortografía, unidades, lateralidad contradictoria entre hallazgos y conclusiones, y palabras parecidas que cambian el sentido (como vaso y bazo).`,
     'Toca cada palabra equivocada para marcarla; tócala otra vez para desmarcarla. Con teclado: Tab para moverte, Enter o espacio para marcar.',
     `Tienes ${datos.r3.seg} segundos. Puedes terminar antes con el botón «Terminar».`,
     `Cada error encontrado suma ${(100 / n).toFixed(1)} puntos; cada palabra correcta marcada resta ${PENALIZACION_FALSO_POSITIVO}. Marcar todo no conviene.`,
@@ -17,11 +19,12 @@ export function instrucciones(datos) {
 
 export function jugar(contenedor, datos, terminar) {
   const segmentos = parsearCazaErrores(datos.r3.texto);
+  const totalErrores = erroresCazaErrores(segmentos).length;
   const marcados = new Set();
   let terminado = false;
 
-  const contador = el('p', { clase: 'progreso', 'aria-live': 'polite' });
-  const pintarContador = () => { contador.textContent = `Palabras marcadas: ${marcados.size}`; };
+  const contador = el('span', { clase: 'chip chip-puntos', 'aria-live': 'polite' });
+  const pintarContador = () => { contador.textContent = `🚩 ${marcados.size} marcadas · buscas ${totalErrores}`; };
 
   function alternar(span, indice) {
     if (terminado) return;
@@ -30,6 +33,7 @@ export function jugar(contenedor, datos, terminar) {
     const marcado = marcados.has(indice);
     span.setAttribute('aria-pressed', String(marcado));
     span.classList.toggle('marcada', marcado);
+    if (marcado) animar(span, 'pop');
     pintarContador();
   }
 
@@ -50,8 +54,10 @@ export function jugar(contenedor, datos, terminar) {
   pintarContador();
   reemplazar(contenedor,
     cuenta.elemento,
-    contador,
-    reporte,
+    el('div', { clase: 'barra-ronda' },
+      el('p', { clase: 'progreso' }, datos.r3.titulo ? `📄 ${datos.r3.titulo}` : '📄 Reporte'),
+      contador),
+    el('div', { clase: 'hoja-reporte entrar' }, reporte),
     el('div', { clase: 'acciones' }, el('button', { type: 'button', clase: 'primario', onClick: finalizar }, 'Terminar')),
   );
 
@@ -83,11 +89,13 @@ export function jugar(contenedor, datos, terminar) {
         el('span', { clase: 'acierto' }, '✓ encontrado'), ' · ',
         el('span', { clase: 'omitido' }, 'no encontrado'), ' · ',
         el('s', { clase: 'falso' }, '✗ marcada sin ser error')),
-      texto,
-      el('h3', {}, 'Los errores del reporte'),
-      el('ul', { clase: 'lista-revision' }, errores.map((e) => el('li', {},
-        el('s', { clase: 'mal' }, e.texto), ' → ', el('strong', {}, e.correccion),
-        marcados.has(e.indice) ? el('span', { clase: 'ok' }, ' ✓ encontrado') : ' (no encontrado)'))),
+      el('div', { clase: 'hoja-reporte' }, texto),
+      el('h3', {}, '📚 Los errores del reporte y por qué'),
+      el('ul', { clase: 'lista-aprendizaje' }, errores.map((e) => el('li', { clase: marcados.has(e.indice) ? 'encontrado' : 'no-encontrado' },
+        el('p', {},
+          el('s', { clase: 'mal' }, e.texto), ' → ', el('strong', {}, e.correccion),
+          marcados.has(e.indice) ? el('span', { clase: 'ok' }, ' ✓ encontrado') : el('span', { clase: 'pendiente' }, ' · no encontrado')),
+        e.explicacion ? el('p', { clase: 'regla' }, `💡 ${e.explicacion}`) : null))),
     );
   }
 

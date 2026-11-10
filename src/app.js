@@ -9,14 +9,14 @@ import * as ortografia from './rondas/ortografia.js';
 import * as racha from './rondas/racha.js';
 import { crearAlmacen } from './storage/adapter.js';
 import { leerIntento, marcarIntento } from './storage/local.js';
-import { csvAcumulado, csvEdicion, renderAcumulado, renderMedallas, renderTablaEdicion } from './tabla.js';
-import { anunciar, campoTexto, descargarArchivo, el, formatearTiempo, reemplazar } from './ui.js';
+import { csvAcumulado, csvEdicion, renderAcumulado, renderMedallas, renderPodio, renderTablaEdicion } from './tabla.js';
+import { prepararExamen } from './seleccion.js';
+import { animar, anunciar, campoTexto, confeti, contarHasta, descargarArchivo, el, formatearTiempo, reemplazar } from './ui.js';
 import { elegirEdiciones, validarEdicion, validarIndice } from './validador.js';
 
 /** Orden de juego. Para agregar, quitar o reordenar rondas solo se toca esta lista. */
 const RONDAS = [ortografia, dictado, cazaerrores, memoria, racha];
 const ESPERA_EXPLICITA_MS = 10000;
-const NOMBRES_RONDA = Object.fromEntries(RONDAS.map((r) => [r.id, r.titulo]));
 
 const parametros = new URLSearchParams(location.search);
 const MODO_PRUEBA = parametros.has('prueba');
@@ -103,7 +103,7 @@ function pantallaError(mensaje, detalles = []) {
 function pantallaInicio({ resaltar } = {}) {
   const campoNombre = campoTexto({ id: 'nombre', name: 'nombre', maxlength: '80', required: true, 'aria-describedby': 'nombre-ayuda nombre-error' });
   const error = el('p', { id: 'nombre-error', clase: 'error-campo', role: 'alert' });
-  const boton = el('button', { type: 'submit', clase: 'primario' }, 'Comenzar');
+  const boton = el('button', { type: 'submit', clase: 'primario brillante' }, '¡Comenzar! 🚀');
 
   const formulario = el('form', { clase: 'formulario-nombre', novalidate: true, onSubmit: (e) => { e.preventDefault(); comenzar(); } },
     el('label', { for: 'nombre' }, 'Tu nombre y apellido'),
@@ -138,7 +138,7 @@ function pantallaInicio({ resaltar } = {}) {
       sinRespuesta = true;
     }
     boton.disabled = false;
-    boton.textContent = 'Comenzar';
+    boton.textContent = '¡Comenzar! 🚀';
     if (!MODO_PRUEBA && registrados.some((r) => r.slug === slug)) {
       error.textContent = `Ya existe un resultado de «${nombre}» en esta edición. Solo se permite un intento por persona.`;
       return;
@@ -149,17 +149,31 @@ function pantallaInicio({ resaltar } = {}) {
     empezarPartida(nombre, slug);
   }
 
+  const consejos = app.edicion.consejos ?? [];
+  const consejo = consejos.length ? consejos[Math.floor(Math.random() * consejos.length)] : null;
   pantalla(
-    el('h2', {}, `Reto de transcripción · ${app.edicion.titulo}`),
-    MODO_PRUEBA ? el('p', { clase: 'aviso aviso-alerta' }, 'Modo prueba: el resultado no se guarda ni bloquea el nombre.') : null,
-    el('section', { clase: 'bienvenida' },
-      el('p', {}, 'Cinco rondas cronometradas, unos diez minutos en total. Cada ronda vale 100 puntos.'),
-      el('ul', { clase: 'reglas' },
-        el('li', {}, 'La precisión manda: el tiempo solo desempata, nunca suma puntos.'),
-        el('li', {}, 'Un intento por persona en cada edición. Si recargas la página a mitad de partida, el intento se pierde.'),
-        el('li', {}, 'Juega en computadora, con audio y en un lugar tranquilo.'),
-        el('li', {}, 'Todo el contenido clínico es inventado para el juego.')),
-      formulario),
+    el('section', { clase: 'portada entrar' },
+      el('div', { clase: 'portada-texto' },
+        el('p', { clase: 'etiqueta-edicion' }, `✨ Edición ${app.edicion.titulo}${app.edicion.tema ? ` · ${app.edicion.tema}` : ''}`),
+        el('h2', {}, '¿Listo para el reto?'),
+        el('p', { clase: 'portada-lema' }, 'Cinco rondas, unos diez minutos y 500 puntos en juego. Compite con tu equipo y aprende algo nuevo en cada partida.'),
+        el('ul', { clase: 'reglas' },
+          el('li', {}, '🎯 La precisión manda: el tiempo solo desempata.'),
+          el('li', {}, '🔀 Cada partida es distinta: las preguntas se sortean de un banco grande.'),
+          el('li', {}, '☝️ Un intento por persona en cada edición. Si recargas a mitad de partida, el intento se pierde.'),
+          el('li', {}, '🎧 Juega en computadora, con audio y en un lugar tranquilo.'))),
+      el('div', { clase: 'portada-arte', 'aria-hidden': 'true' }, '🩺')),
+    MODO_PRUEBA ? el('p', { clase: 'aviso aviso-alerta' }, '🧪 Modo prueba: el resultado no se guarda ni bloquea el nombre.') : null,
+    el('ol', { clase: 'mosaico-rondas', 'aria-label': 'Las cinco rondas' },
+      RONDAS.map((r, i) => el('li', { clase: `mosaico tema-${r.id}` },
+        el('span', { clase: 'mosaico-icono', 'aria-hidden': 'true' }, r.icono),
+        el('span', { clase: 'mosaico-numero' }, `Ronda ${i + 1}`),
+        el('strong', {}, r.titulo),
+        el('span', { clase: 'mosaico-lema' }, r.lema)))),
+    el('section', { clase: 'tarjeta-inicio' }, formulario),
+    consejo ? el('aside', { clase: 'consejo', 'aria-label': 'Dato de aprendizaje' },
+      el('span', { clase: 'consejo-icono', 'aria-hidden': 'true' }, '💡'),
+      el('div', {}, el('strong', {}, '¿Sabías que…? '), consejo)) : null,
     seccionTabla({ resaltar }),
   );
   if (!resaltar) campoNombre.focus();
@@ -232,7 +246,7 @@ function seccionTabla({ resaltar } = {}) {
       reemplazar(contenido, renderAcumulado(datos, { orden: selectorOrden.value, slugActual: resaltar }));
       reemplazar(medallas);
     } else {
-      reemplazar(contenido, renderTablaEdicion(datos, { slugActual: resaltar, alReintentar: reintentar }));
+      reemplazar(contenido, renderPodio(datos), renderTablaEdicion(datos, { slugActual: resaltar, alReintentar: reintentar }));
       reemplazar(medallas, renderMedallas(datos));
     }
   }
@@ -263,7 +277,7 @@ function seccionTabla({ resaltar } = {}) {
   cargar();
 
   return el('section', { clase: 'seccion-tabla', 'aria-labelledby': 'titulo-tabla' },
-    el('h2', { id: 'titulo-tabla', clase: 'h2-secundario' }, 'Tabla de posiciones'),
+    el('h2', { id: 'titulo-tabla', clase: 'h2-secundario' }, '🏆 Tabla de posiciones'),
     el('div', { clase: 'controles-tabla' },
       el('label', { for: 'selector-edicion' }, 'Edición'), selector, selectorOrden, botonCSV),
     aviso,
@@ -275,30 +289,53 @@ function seccionTabla({ resaltar } = {}) {
 // ---------- Partida ----------
 
 function empezarPartida(nombre, slug) {
-  app.partida = { nombre, slug, rondas: {}, segundos: 0, indice: 0, revisiones: {} };
+  app.partida = { nombre, slug, rondas: {}, segundos: 0, indice: 0, examen: prepararExamen(app.edicion) };
   if (!MODO_PRUEBA) marcarIntento(app.edicion.id, slug, 'iniciado');
   window.addEventListener('beforeunload', evitarSalida);
   pantallaInstrucciones();
 }
 
+/** Barra superior con las cinco rondas: hechas (con puntos), actual y pendientes. */
+function pasos() {
+  return el('ol', { clase: 'pasos', 'aria-label': 'Progreso de la partida' }, RONDAS.map((r, i) => {
+    const hecha = i < app.partida.indice || (i === app.partida.indice && r.id in app.partida.rondas);
+    const actual = i === app.partida.indice;
+    return el('li', {
+      clase: `paso tema-${r.id}${hecha ? ' hecho' : ''}${actual ? ' actual' : ''}`,
+      'aria-current': actual ? 'step' : undefined,
+    },
+    el('span', { clase: 'paso-icono', 'aria-hidden': 'true' }, hecha ? '✓' : r.icono),
+    el('span', { clase: 'paso-texto' }, hecha ? `${r.titulo}: ${app.partida.rondas[r.id]}` : r.titulo));
+  }));
+}
+
 function pantallaInstrucciones() {
   const ronda = RONDAS[app.partida.indice];
-  const boton = el('button', { type: 'button', clase: 'primario grande', onClick: () => jugarRonda(ronda) }, 'Empezar');
+  const boton = el('button', { type: 'button', clase: 'primario grande brillante', onClick: () => jugarRonda(ronda) }, `¡Empezar! ${ronda.icono}`);
   pantalla(
-    el('p', { clase: 'progreso' }, `Ronda ${app.partida.indice + 1} de ${RONDAS.length}`),
-    el('h2', {}, ronda.titulo),
-    el('ul', { clase: 'instrucciones' }, ronda.instrucciones(app.edicion).map((t) => el('li', {}, t))),
-    el('p', { clase: 'ayuda' }, 'El cronómetro arranca cuando presiones «Empezar».'),
-    el('div', { clase: 'acciones' }, boton),
+    pasos(),
+    el('section', { clase: `tarjeta-ronda tema-${ronda.id} entrar` },
+      el('div', { clase: 'cabeza-ronda' },
+        el('span', { clase: 'insignia', 'aria-hidden': 'true' }, ronda.icono),
+        el('div', {},
+          el('p', { clase: 'progreso' }, `Ronda ${app.partida.indice + 1} de ${RONDAS.length} · 100 puntos`),
+          el('h2', {}, ronda.titulo),
+          el('p', { clase: 'lema' }, ronda.lema))),
+      el('ul', { clase: 'instrucciones' }, ronda.instrucciones(app.partida.examen).map((t) => el('li', {}, t))),
+      el('p', { clase: 'ayuda' }, '⏱ El cronómetro arranca cuando presiones «¡Empezar!».'),
+      el('div', { clase: 'acciones' }, boton)),
   );
 }
 
 function jugarRonda(ronda) {
   const zona = el('div', { clase: `ronda ronda-${ronda.id}` });
   pantalla(
-    el('p', { clase: 'progreso' }, `Ronda ${app.partida.indice + 1} de ${RONDAS.length}`),
-    el('h2', {}, ronda.titulo),
-    zona,
+    pasos(),
+    el('section', { clase: `tarjeta-ronda tema-${ronda.id}` },
+      el('div', { clase: 'cabeza-ronda compacta' },
+        el('span', { clase: 'insignia', 'aria-hidden': 'true' }, ronda.icono),
+        el('h2', {}, ronda.titulo)),
+      zona),
   );
   const inicio = performance.now();
   let terminada = false;
@@ -310,26 +347,70 @@ function jugarRonda(ronda) {
     // Se pospone un tick para no desmontar la ronda dentro de su propio manejador de eventos.
     setTimeout(() => pantallaResumen(ronda, revision), 0);
   };
-  app.cancelarRonda = ronda.jugar(zona, app.edicion, terminar) ?? null;
+  app.cancelarRonda = ronda.jugar(zona, app.partida.examen, terminar) ?? null;
+}
+
+/** Frase y estrellas según el puntaje de una ronda. */
+function valoracion(puntos) {
+  if (puntos >= 90) return { estrellas: 3, frase: '¡Impresionante!' };
+  if (puntos >= 70) return { estrellas: 2, frase: '¡Muy bien!' };
+  if (puntos >= 40) return { estrellas: 1, frase: 'Buen trabajo, ¡sigue así!' };
+  return { estrellas: 0, frase: 'Cada error es una lección: revisa abajo.' };
+}
+
+/** Anillo de progreso con el puntaje al centro. */
+function anillo(puntos, maximo, clase = '') {
+  const numero = el('span', { clase: 'anillo-numero' }, '0');
+  const nodo = el('div', { clase: `anillo ${clase}`, role: 'img', 'aria-label': `${puntos} de ${maximo} puntos` },
+    numero, el('span', { clase: 'anillo-max', 'aria-hidden': 'true' }, `/ ${maximo}`));
+  nodo.style.setProperty('--pct', String(Math.round((puntos / maximo) * 100)));
+  contarHasta(numero, puntos);
+  return nodo;
 }
 
 function pantallaResumen(ronda, revision) {
   const ultima = app.partida.indice === RONDAS.length - 1;
+  const puntos = app.partida.rondas[ronda.id];
+  const { estrellas, frase } = valoracion(puntos);
   const boton = el('button', {
-    type: 'button', clase: 'primario',
+    type: 'button', clase: 'primario grande',
     onClick: () => {
       app.partida.indice++;
       if (ultima) pantallaFinal();
       else pantallaInstrucciones();
     },
-  }, ultima ? 'Ver resultado final' : 'Siguiente ronda');
+  }, ultima ? 'Ver resultado final 🏁' : 'Siguiente ronda ➜');
+  const consejos = app.partida.examen.consejos;
+  const consejo = consejos.length ? consejos[app.partida.indice % consejos.length] : null;
+  const estrellasNodo = el('p', { clase: 'estrellas', 'aria-label': `${estrellas} de 3 estrellas` },
+    [1, 2, 3].map((n) => el('span', { clase: n <= estrellas ? 'estrella llena' : 'estrella', 'aria-hidden': 'true' }, '★')));
   pantalla(
-    el('p', { clase: 'progreso' }, `Ronda ${app.partida.indice + 1} de ${RONDAS.length} terminada`),
-    el('h2', {}, `${ronda.titulo}: ${app.partida.rondas[ronda.id]} / 100`),
-    revision ? el('section', { clase: 'revision-ronda' }, revision) : null,
-    el('div', { clase: 'acciones' }, boton),
+    pasos(),
+    el('section', { clase: `tarjeta-ronda tema-${ronda.id} resumen entrar` },
+      el('div', { clase: 'resumen-cabeza' },
+        anillo(puntos, 100),
+        el('div', {},
+          el('p', { clase: 'progreso' }, `${ronda.icono} Ronda ${app.partida.indice + 1} de ${RONDAS.length} terminada`),
+          el('h2', {}, `${ronda.titulo}: ${puntos} / 100`),
+          estrellasNodo,
+          el('p', { clase: 'lema' }, frase))),
+      revision ? el('div', { clase: 'revision-ronda' }, revision) : null,
+      consejo ? el('aside', { clase: 'consejo' },
+        el('span', { clase: 'consejo-icono', 'aria-hidden': 'true' }, '💡'),
+        el('div', {}, el('strong', {}, 'Dato para llevar: '), consejo)) : null,
+      el('div', { clase: 'acciones' }, boton)),
   );
-  anunciar(`${ronda.titulo}: ${app.partida.rondas[ronda.id]} de 100 puntos.`);
+  animar(estrellasNodo, 'pop');
+  anunciar(`${ronda.titulo}: ${puntos} de 100 puntos. ${frase}`);
+}
+
+/** Título divertido según el total. */
+function rango(total) {
+  if (total >= 450) return { icono: '🏆', titulo: 'Leyenda de la transcripción' };
+  if (total >= 380) return { icono: '🥇', titulo: 'Oído de oro' };
+  if (total >= 300) return { icono: '🥈', titulo: 'Pluma experta' };
+  if (total >= 200) return { icono: '🥉', titulo: 'En ascenso' };
+  return { icono: '🌱', titulo: 'Semilla de campeón' };
 }
 
 async function pantallaFinal() {
@@ -348,20 +429,30 @@ async function pantallaFinal() {
   const estado = el('div', { clase: 'estado-guardado', role: 'status' }, el('p', {}, 'Guardando tu resultado…'));
   const acciones = el('div', { clase: 'acciones' });
 
+  const { icono, titulo } = rango(resultado.total);
   pantalla(
-    el('h2', {}, `Tu resultado: ${resultado.total} / 500`),
-    el('p', { clase: 'total-grande' }, `${resultado.total}`, el('span', {}, ' / 500')),
-    el('p', {}, `Tiempo empleado: ${formatearTiempo(resultado.segundos)} (solo cuenta para desempatar).`),
-    el('table', { clase: 'tabla desglose' },
-      el('caption', {}, 'Desglose por ronda'),
-      el('tbody', {}, IDS_RONDAS.map((id) => el('tr', {},
-        el('th', { scope: 'row' }, NOMBRES_RONDA[id]),
-        el('td', { clase: 'num' }, `${rondas[id]} / 100`))))),
-    estado,
-    acciones,
+    el('section', { clase: 'tarjeta-final entrar' },
+      el('p', { clase: 'trofeo', 'aria-hidden': 'true' }, icono),
+      el('p', { clase: 'rango' }, titulo),
+      el('h2', {}, `¡Bien hecho, ${p.nombre.split(' ')[0]}! Tu resultado: ${resultado.total} / 500`),
+      anillo(resultado.total, 500, 'anillo-grande'),
+      el('p', {}, `⏱ Tiempo empleado: ${formatearTiempo(resultado.segundos)} (solo cuenta para desempatar).`),
+      el('table', { clase: 'tabla desglose' },
+        el('caption', {}, 'Desglose por ronda'),
+        el('tbody', {}, RONDAS.map((r) => {
+          const relleno = el('span', { clase: 'barrita-relleno' });
+          relleno.style.setProperty('width', `${rondas[r.id]}%`);
+          return el('tr', { clase: `tema-${r.id}` },
+            el('th', { scope: 'row' }, `${r.icono} ${r.titulo}`),
+            el('td', { clase: 'celda-barra', 'aria-hidden': 'true' }, el('span', { clase: 'barrita' }, relleno)),
+            el('td', { clase: 'num' }, `${rondas[r.id]} / 100`));
+        }))),
+      estado,
+      acciones),
   );
+  confeti({ piezas: resultado.total >= 300 ? 180 : 90 });
 
-  const verTabla = el('button', { type: 'button', clase: 'primario', onClick: () => { app.partida = null; pantallaInicio({ resaltar: resultado.slug }); } }, 'Ver tabla de posiciones');
+  const verTabla = el('button', { type: 'button', clase: 'primario grande', onClick: () => { app.partida = null; pantallaInicio({ resaltar: resultado.slug }); } }, 'Ver tabla de posiciones 🏆');
 
   if (MODO_PRUEBA) {
     reemplazar(estado, el('p', { clase: 'aviso' }, 'Modo prueba: el resultado no se guardó.'));

@@ -39,6 +39,7 @@ export function crearReproductor(item, { maxReproducciones = 2, esperaInicioMs =
   let usadas = 0;
   let sonando = false;
   let detenerActual = null;
+  let elemento = null;
 
   const botonReproducir = el('button', { type: 'button', clase: 'primario', onClick: reproducir });
   const botonDetener = el('button', { type: 'button', clase: 'secundario', disabled: true, onClick: () => detenerActual?.('usuario') }, '■ Detener');
@@ -52,6 +53,7 @@ export function crearReproductor(item, { maxReproducciones = 2, esperaInicioMs =
     botonReproducir.disabled = sonando || restantes <= 0;
     botonDetener.disabled = !sonando;
     contador.textContent = `Reproducciones: ${usadas} de ${maxReproducciones}`;
+    elemento?.classList.toggle('sonando', sonando);
     if (restantes <= 0 && !sonando) estado.textContent = 'Ya usaste las dos reproducciones de este audio.';
   }
 
@@ -142,11 +144,12 @@ export function crearReproductor(item, { maxReproducciones = 2, esperaInicioMs =
     limpiezas.add(quitar);
   }
 
-  pintar();
-  const elemento = el('div', { clase: 'reproductor' },
-    el('div', { clase: 'reproductor-controles' }, botonReproducir, botonDetener, contador),
+  const ondas = el('span', { clase: 'ondas', 'aria-hidden': 'true' }, el('i'), el('i'), el('i'), el('i'), el('i'));
+  elemento = el('div', { clase: 'reproductor' },
+    el('div', { clase: 'reproductor-controles' }, el('span', { clase: 'icono-audio', 'aria-hidden': 'true' }, '🎧'), botonReproducir, botonDetener, ondas, contador),
     estado,
     respaldo,
   );
+  pintar();
   return { elemento };
 }

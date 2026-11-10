@@ -1,9 +1,12 @@
 // Ronda 4 — Memoria: cada frase se muestra unos segundos, desaparece del DOM y se escribe de memoria.
 import { precision, puntajeTranscripcion } from '../calificacion.js';
 import { campoTexto, crearCuentaRegresiva, el, reemplazar } from '../ui.js';
+import { medidor } from './comunes.js';
 
 export const id = 'r4';
 export const titulo = 'Memoria';
+export const icono = '🧠';
+export const lema = 'Mira la frase, retenla y escríbela cuando desaparezca.';
 
 export function instrucciones(datos) {
   const seg = datos.r4.map((f) => f.seg).join(' y ');
@@ -26,8 +29,12 @@ export function jugar(contenedor, datos, terminar) {
     const item = items[indice];
     const boton = el('button', { type: 'button', clase: 'primario', onClick: exhibir }, 'Mostrar la frase');
     reemplazar(contenedor,
-      el('p', { clase: 'progreso' }, `Frase ${indice + 1} de ${items.length} · ${item.pts} puntos`),
-      el('p', {}, `La frase se mostrará durante ${item.seg} segundos.`),
+      el('div', { clase: 'barra-ronda' },
+        el('p', { clase: 'progreso' }, `Frase ${indice + 1} de ${items.length}`),
+        el('span', { clase: 'chip chip-puntos' }, `🎯 ${item.pts} pts`)),
+      el('div', { clase: 'tarjeta-espera entrar' },
+        el('p', { clase: 'icono-grande', 'aria-hidden': 'true' }, '👀'),
+        el('p', {}, `La frase se mostrará durante ${item.seg} segundos. ¡Concéntrate!`)),
       el('div', { clase: 'acciones' }, boton),
     );
     boton.focus();
@@ -39,7 +46,7 @@ export function jugar(contenedor, datos, terminar) {
     reemplazar(contenedor,
       el('p', { clase: 'progreso' }, `Frase ${indice + 1} de ${items.length} · memoriza`),
       cuenta.elemento,
-      el('p', { clase: 'frase-memoria', 'aria-live': 'polite' }, item.t),
+      el('p', { clase: 'frase-memoria entrar', 'aria-live': 'polite' }, item.t),
     );
   }
 
@@ -65,9 +72,9 @@ export function jugar(contenedor, datos, terminar) {
   }
 
   function finalizar() {
-    const revision = el('div', {}, el('h3', {}, 'Revisión'),
+    const revision = el('div', {}, el('h3', {}, '🔎 Compara con el original'),
       respuestas.map((r, i) => el('div', { clase: 'comparacion' },
-        el('p', { clase: 'etiqueta' }, `Frase ${i + 1}: ${Math.round(precision(r.escrito, r.esperado) * 100)} % de precisión`),
+        medidor(`Frase ${i + 1}`, precision(r.escrito, r.esperado)),
         el('p', {}, el('strong', {}, 'Original: '), r.esperado),
         el('p', {}, el('strong', {}, 'Escribiste: '), r.escrito.trim() || '(vacío)'))));
     terminar(puntajeTranscripcion(respuestas), revision);

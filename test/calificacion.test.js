@@ -38,6 +38,12 @@ describe('precisión de transcripción', () => {
     assert.equal(precision('Lito de doce milímetros.', 'Lito de doce milímetros.'), precision('Lito de 12 milímetros.', 'Lito de doce milímetros.'));
   });
 
+  it('acepta las dos grafías válidas de palabras como cardiaca/cardíaca', () => {
+    assert.equal(precision('silueta cardíaca normal', 'Silueta cardiaca normal.'), 1);
+    assert.equal(precision('fosa ilíaca derecha', 'Fosa iliaca derecha.'), 1);
+    assert.ok(precision('silueta cardiáca normal', 'Silueta cardiaca normal.') < 1);
+  });
+
   it('acepta acentos en forma descompuesta (NFD) igual que compuesta', () => {
     assert.equal(precision('Riñón', 'Riñón'), 1);
   });

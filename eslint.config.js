@@ -3,7 +3,7 @@ import js from '@eslint/js';
 const navegador = Object.fromEntries([
   'window', 'document', 'location', 'navigator', 'performance', 'fetch', 'URL', 'URLSearchParams',
   'Blob', 'Audio', 'AbortController', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
-  'console', 'structuredClone',
+  'console', 'structuredClone', 'requestAnimationFrame',
 ].map((n) => [n, 'readonly']));
 
 export default [

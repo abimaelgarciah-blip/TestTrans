@@ -2,9 +2,12 @@
 import { detenerTodo, crearReproductor } from '../audio.js';
 import { precision, puntajeTranscripcion } from '../calificacion.js';
 import { campoTexto, el, reemplazar } from '../ui.js';
+import { medidor } from './comunes.js';
 
 export const id = 'r2';
 export const titulo = 'Dictado';
+export const icono = '🎧';
+export const lema = 'Escucha con atención y transcribe como en un reporte real.';
 
 export function instrucciones(datos) {
   const pts = datos.r2.map((d) => d.pts).join(' + ');
@@ -41,7 +44,9 @@ export function jugar(contenedor, datos, terminar) {
     }
 
     reemplazar(contenedor,
-      el('p', { clase: 'progreso' }, `Dictado ${indice + 1} de ${items.length} · ${item.pts} puntos`),
+      el('div', { clase: 'barra-ronda' },
+        el('p', { clase: 'progreso' }, `Dictado ${indice + 1} de ${items.length}`),
+        el('span', { clase: 'chip chip-puntos' }, `🎯 ${item.pts} pts`)),
       item.nota ? el('p', { clase: 'aviso aviso-alerta' }, `⚠ ${item.nota}`) : null,
       reproductor.elemento,
       el('label', { for: 'dictado-campo' }, 'Tu transcripción'),
@@ -53,9 +58,9 @@ export function jugar(contenedor, datos, terminar) {
 
   function finalizar() {
     detenerTodo();
-    const revision = el('div', {}, el('h3', {}, 'Revisión'),
+    const revision = el('div', {}, el('h3', {}, '🔎 Compara tu transcripción'),
       respuestas.map((r, i) => el('div', { clase: 'comparacion' },
-        el('p', { clase: 'etiqueta' }, `Dictado ${i + 1}: ${Math.round(precision(r.escrito, r.esperado) * 100)} % de precisión`),
+        medidor(`Dictado ${i + 1}`, precision(r.escrito, r.esperado)),
         el('p', {}, el('strong', {}, 'Esperado: '), r.esperado),
         el('p', {}, el('strong', {}, 'Escribiste: '), r.escrito.trim() || '(vacío)'))));
     terminar(puntajeTranscripcion(respuestas), revision);

@@ -1,50 +1,504 @@
 {
-  "id": "2026-11",
-  "titulo": "Noviembre 2026",
-  "r1": [
-    { "q": "Se observa un ___ hepático de 3 cm.", "o": ["absceso", "acceso", "abseso"] },
-    { "q": "Vesícula biliar con ___ de su pared.", "o": ["engrosamiento", "engrozamiento", "engrosamiénto"] },
-    { "q": "Paciente con antecedente de ___ arterial sistémica.", "o": ["hipertensión", "hipertención", "hipertensíon"] },
-    { "q": "Se identifica ___ en el lóbulo inferior derecho.", "o": ["consolidación", "consolidasión", "consolidacion"] },
-    { "q": "Riñón izquierdo con ___ leve.", "o": ["hidronefrosis", "hidronefrósis", "hidronefrocis"] },
-    { "q": "Hallazgos sugestivos de ___ intestinal.", "o": ["obstrucción", "obstrución", "obstruccion"] },
-    { "q": "Imagen ___ de bordes regulares en el segmento VII.", "o": ["hipoecoica", "hipoecóica", "hipoequica"] },
-    { "q": "Se sugiere ___ con tomografía contrastada.", "o": ["correlacionar", "corelacionar", "correlasionar"] },
-    { "q": "Hígado de ___ conservada.", "o": ["ecogenicidad", "ecogenisidad", "ecojenicidad"] },
-    { "q": "Bazo de tamaño y ___ normales.", "o": ["morfología", "morfologia", "morfolojía"] }
-  ],
-  "r2": [
-    {
-      "di": "Hígado de tamaño normal, con ecogenicidad homogénea. No se observan lesiones focales.",
-      "es": "Hígado de tamaño normal, con ecogenicidad homogénea. No se observan lesiones focales.",
-      "pts": 30
-    },
-    {
-      "di": "Vesícula biliar distendida, con pared de tres milímetros y un lito de doce milímetros en su interior.",
-      "es": "Vesícula biliar distendida, con pared de 3 milímetros y un lito de 12 milímetros en su interior.",
-      "pts": 30
-    },
-    {
-      "di": "Riñón derecho de forma y tamaño normales. Se observa un quiste simple de quince milímetros en el polo superior, no, perdón, en el polo inferior. Sin dilatación del sistema colector.",
-      "es": "Riñón derecho de forma y tamaño normales. Se observa un quiste simple de 15 milímetros en el polo inferior. Sin dilatación del sistema colector.",
-      "pts": 40,
-      "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
-    }
-  ],
-  "r3": {
-    "seg": 90,
-    "texto": "ULTRASONIDO ABDOMINAL. Hígado de tamaño normal con ecogenisidad{ecogenicidad} homogénea. Vesícula biliar con pared de 3 cm{mm}, sin litos. Vías biliares sin dilatación. Páncreas y vaso{bazo} de aspecto normal. Riñón derecho con quiste simple de 12 mm en el polo inferior. Riñón izquierdo sin alteraciones. No se observa líquido libre en cavidad perineal{peritoneal}. CONCLUSIÓN: quiste simple en riñón izquierdo{derecho}. Resto del estudio sin halazgos{hallazgos} de importancia."
+ "id": "2026-11",
+ "titulo": "Noviembre 2026",
+ "tema": "Columna, cráneo, mama, tórax y abdomen",
+ "r1": [
+  {
+   "q": "Se observa ___ L5-S1 del 15%.",
+   "o": [
+    "anterolistesis",
+    "anterolístesis",
+    "anterolistésis"
+   ],
+   "nota": "Anterolistesis es llana y termina en s: no lleva tilde."
   },
-  "r4": [
-    { "t": "Quiste simple de 15 mm en el polo inferior del riñón derecho.", "seg": 8, "pts": 40 },
-    { "t": "Hígado con esteatosis leve, sin lesiones focales; vesícula biliar sin litos ni engrosamiento de pared.", "seg": 12, "pts": 60 }
+  {
+   "q": "Cambios por ___ facetaria bilateral.",
+   "o": [
+    "artrosis",
+    "artrósis",
+    "artrozis"
+   ],
+   "nota": "Las palabras en -osis (artrosis, lordosis) son llanas terminadas en s: sin tilde, y con s."
+  },
+  {
+   "q": "Formación de complejo disco-___ posterolateral.",
+   "o": [
+    "osteofitario",
+    "osteofítario",
+    "osteophitario"
+   ],
+   "nota": "Osteofito viene del griego phyton, pero en español se escribe con f y sin tilde."
+  },
+  {
+   "q": "Se identifica un ___ en el cuerpo vertebral de T9.",
+   "o": [
+    "hemangioma",
+    "hemanjioma",
+    "emangioma"
+   ],
+   "nota": "Hem- (sangre) lleva h; la g se mantiene ante i: hemangioma."
+  },
+  {
+   "q": "Pequeños nódulos de ___ en T7 y T8.",
+   "o": [
+    "Schmorl",
+    "Shmorl",
+    "Schmorll"
+   ],
+   "nota": "Epónimo del patólogo Christian Schmorl: Sch- y una sola l al final."
+  },
+  {
+   "q": "Hiperintensidades compatibles con ___ crónica.",
+   "o": [
+    "leucoencefalopatía",
+    "leucoencefalopatia",
+    "leucoensefalopatía"
+   ],
+   "nota": "-patía lleva tilde en la í (hiato): discopatía, adenopatía, leucoencefalopatía."
+  },
+  {
+   "q": "Engrosamiento ___ en el antro maxilar derecho.",
+   "o": [
+    "mucoperióstico",
+    "mucoperiostico",
+    "mucoperióstíco"
+   ],
+   "nota": "Mucoperióstico es esdrújula: siempre lleva tilde, y solo una."
+  },
+  {
+   "q": "Las celdillas ___ muestran cambio inflamatorio.",
+   "o": [
+    "mastoideas",
+    "mastoídeas",
+    "mastoidéas"
+   ],
+   "nota": "Mastoideas es llana terminada en s: sin tilde."
+  },
+  {
+   "q": "Aracnoidocele ___ grado III.",
+   "o": [
+    "selar",
+    "sellar",
+    "celar"
+   ],
+   "nota": "Selar se refiere a la silla turca (sella turcica): con s y una sola l."
+  },
+  {
+   "q": "Se observa ___ de la arteria vertebral izquierda.",
+   "o": [
+    "hipoplasia",
+    "hipoplacia",
+    "ipoplasia"
+   ],
+   "nota": "Hipo- lleva h, y -plasia (formación) se escribe con s."
+  },
+  {
+   "q": "Parénquima mamario de tipo ___ disperso.",
+   "o": [
+    "fibroglandular",
+    "fibroglandullar",
+    "fibrograndular"
+   ],
+   "nota": "Fibro + glandular: con l, no con r, y una sola l."
+  },
+  {
+   "q": "Ganglios axilares con centro ___.",
+   "o": [
+    "radiolúcido",
+    "radiolucido",
+    "radiolúsido"
+   ],
+   "nota": "Radiolúcido (de lúcido) es esdrújula y se escribe con c."
+  },
+  {
+   "q": "Hallazgos que corresponden a categoría ___ 2.",
+   "o": [
+    "BI-RADS",
+    "BIRRADS",
+    "BI-RAD"
+   ],
+   "nota": "El sistema del ACR se escribe BI-RADS, en mayúsculas y con guion."
+  },
+  {
+   "q": "Nódulo de bordes ___ en la base pulmonar izquierda.",
+   "o": [
+    "espiculados",
+    "espículados",
+    "espiculádos"
+   ],
+   "nota": "Espícula lleva tilde, pero espiculados es llana terminada en s: sin tilde."
+  },
+  {
+   "q": "Adenopatía ___ de 28 x 17 mm.",
+   "o": [
+    "subcarinal",
+    "subcarinál",
+    "sucarinal"
+   ],
+   "nota": "Sub + carina: subcarinal, aguda terminada en l, sin tilde."
+  },
+  {
+   "q": "Vejiga ___ con orina residual mínima.",
+   "o": [
+    "anecoica",
+    "anecóica",
+    "anecoíca"
+   ],
+   "nota": "An- + eco: sin ecos. El diptongo oi no lleva tilde."
+  },
+  {
+   "q": "Próstata con calcificaciones periféricas ___.",
+   "o": [
+    "incipientes",
+    "insipientes",
+    "incipiéntes"
+   ],
+   "nota": "Incipiente (que empieza) con c; insipiente significa 'falto de saber'."
+  },
+  {
+   "q": "Lesión quística en el proceso ___ del páncreas.",
+   "o": [
+    "uncinado",
+    "unsinado",
+    "uncinádo"
+   ],
+   "nota": "Uncinado (en forma de gancho, del latín uncinus) se escribe con c."
+  },
+  {
+   "q": "Datos de ___ portal con esplenomegalia.",
+   "o": [
+    "hipertensión",
+    "hipertención",
+    "hipertensíon"
+   ],
+   "nota": "Tenso → tensión: con s. La tilde va en la ó."
+  },
+  {
+   "q": "Vesícula ___ con lodo biliar en su interior.",
+   "o": [
+    "hidrópica",
+    "hidropica",
+    "hidrópika"
+   ],
+   "nota": "Hidrópica es esdrújula: lleva tilde."
+  },
+  {
+   "q": "Quistes corticales renales simples, ___ 1.",
+   "o": [
+    "Bosniak",
+    "Bosnyak",
+    "Bosniac"
+   ],
+   "nota": "Clasificación de Morton Bosniak: con i y k final."
+  },
+  {
+   "q": "Signo de ___ como hallazgo incidental.",
+   "o": [
+    "Chilaiditi",
+    "Chilaiditti",
+    "Chiladiti"
+   ],
+   "nota": "Epónimo del radiólogo Demetrius Chilaiditi: una sola t."
+  },
+  {
+   "q": "Cambios por ___ multinivel.",
+   "o": [
+    "espondilosis",
+    "espondilósis",
+    "espondilocis"
+   ],
+   "nota": "Otra palabra en -osis: llana, con s y sin tilde."
+  },
+  {
+   "q": "Desplazamiento de C5 sobre C6 compatible con ___ grado I.",
+   "o": [
+    "retrolistesis",
+    "retrolístesis",
+    "retrolistésis"
+   ],
+   "nota": "Retrolistesis, como anterolistesis, es llana terminada en s: sin tilde."
+  },
+  {
+   "q": "Hipertrofia de la zona ___ con nódulos prominentes.",
+   "o": [
+    "transicional",
+    "transiccional",
+    "transisional"
+   ],
+   "nota": "Transición → transicional: una sola c."
+  },
+  {
+   "q": "Infiltración grasa en la musculatura ___.",
+   "o": [
+    "paravertebral",
+    "parabertebral",
+    "paravertevral"
+   ],
+   "nota": "Vértebra se escribe con v y b, en ese orden: paravertebral."
+  },
+  {
+   "q": "Estructuras óseas sin lesiones líticas ni ___.",
+   "o": [
+    "blásticas",
+    "blasticas",
+    "vlásticas"
+   ],
+   "nota": "Blásticas es esdrújula y se escribe con b."
+  },
+  {
+   "q": "Se observa ___ septal a la izquierda.",
+   "o": [
+    "desviación",
+    "desbiación",
+    "desviacion"
+   ],
+   "nota": "Desviar → desviación: con v y tilde en la ó."
+  },
+  {
+   "q": "Cruce ___ intracanalicular izquierdo.",
+   "o": [
+    "neurovascular",
+    "neurobascular",
+    "neurovasculár"
+   ],
+   "nota": "Vascular (de vaso) con v."
+  },
+  {
+   "q": "Patrón mastográfico ___ denso.",
+   "o": [
+    "heterogéneamente",
+    "heterogeneamente",
+    "heterojéneamente"
+   ],
+   "nota": "Los adverbios en -mente conservan la tilde del adjetivo: heterogénea → heterogéneamente."
+  },
+  {
+   "q": "Persisten cambios posquirúrgicos con ___ asociada.",
+   "o": [
+    "mielomalacia",
+    "mielomalasia",
+    "mielomalácia"
+   ],
+   "nota": "Malacia (reblandecimiento) se escribe con c y sin tilde."
+  },
+  {
+   "q": "Se sugiere ___ con resonancia magnética.",
+   "o": [
+    "caracterización",
+    "caracterisación",
+    "caraterización"
+   ],
+   "nota": "Carácter → caracterizar → caracterización: con c antes de la t y con z."
+  }
+ ],
+ "r2": [
+  [
+   {
+    "di": "Rectificación de la lordosis lumbar. Los cuerpos vertebrales conservan su morfología y altura, sin trazos de fractura.",
+    "es": "Rectificación de la lordosis lumbar. Los cuerpos vertebrales conservan su morfología y altura, sin trazos de fractura.",
+    "pts": 30
+   },
+   {
+    "di": "Desviación septal a la derecha. Senos paranasales, órbitas y celdillas mastoideas de características normales.",
+    "es": "Desviación septal a la derecha. Senos paranasales, órbitas y celdillas mastoideas de características normales.",
+    "pts": 30
+   },
+   {
+    "di": "Ambas mamas son simétricas. La piel es de densidad y espesor normal, sin retracción del complejo areola-pezón.",
+    "es": "Ambas mamas son simétricas. La piel es de densidad y espesor normal, sin retracción del complejo areola-pezón.",
+    "pts": 30
+   },
+   {
+    "di": "La tráquea es central, con la luz íntegra. Grandes vasos de calibre adecuado, sin dilataciones ni compresiones.",
+    "es": "La tráquea es central, con la luz íntegra. Grandes vasos de calibre adecuado, sin dilataciones ni compresiones.",
+    "pts": 30
+   }
   ],
-  "r5": [
-    "colecistitis", "esplenomegalia", "hidronefrosis", "hepatomegalia", "vesícula",
-    "páncreas", "riñón", "ecogénico", "tórax", "neumotórax",
-    "apéndice", "íleo", "colédoco", "adenopatía", "nefrolitiasis",
-    "pielonefritis", "quístico", "parénquima", "hipoecoico", "esteatosis",
-    "ascitis", "colelitiasis", "peritoneo", "hemangioma", "diverticulitis",
-    "ecografía", "linfático", "isquémico", "pélvico", "hígado"
+  [
+   {
+    "di": "Quiste simple en la mama derecha de tres milímetros. Ganglios axilares con centro radiolúcido.",
+    "es": "Quiste simple en la mama derecha de 3 milímetros. Ganglios axilares con centro radiolúcido.",
+    "pts": 30
+   },
+   {
+    "di": "Nódulo de bordes espiculados en la base pulmonar izquierda, de veintitrés milímetros, con atelectasia laminar adyacente.",
+    "es": "Nódulo de bordes espiculados en la base pulmonar izquierda, de 23 milímetros, con atelectasia laminar adyacente.",
+    "pts": 30
+   },
+   {
+    "di": "Vena porta permeable, con diámetro de dieciséis milímetros a nivel del hilio hepático.",
+    "es": "Vena porta permeable, con diámetro de 16 milímetros a nivel del hilio hepático.",
+    "pts": 30
+   },
+   {
+    "di": "Lesión quística de dieciocho milímetros en el proceso uncinado del páncreas, sin dilatación del conducto pancreático principal.",
+    "es": "Lesión quística de 18 milímetros en el proceso uncinado del páncreas, sin dilatación del conducto pancreático principal.",
+    "pts": 30
+   }
+  ],
+  [
+   {
+    "di": "Disminución de la altura del espacio intersomático L4-L5, no, perdón, L5-S1, de predominio posterior, con cambios degenerativos facetarios.",
+    "es": "Disminución de la altura del espacio intersomático L5-S1, de predominio posterior, con cambios degenerativos facetarios.",
+    "pts": 40,
+    "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+   },
+   {
+    "di": "Hemangioma en el cuerpo vertebral de T8, no, perdón, de T9, como hallazgo benigno. El cordón medular es de morfología e intensidad de señal normal.",
+    "es": "Hemangioma en el cuerpo vertebral de T9, como hallazgo benigno. El cordón medular es de morfología e intensidad de señal normal.",
+    "pts": 40,
+    "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+   },
+   {
+    "di": "Quiste simple de mayor dimensión en el cuadrante superior interno, no, perdón, superior externo de la mama izquierda. Ganglios axilares de morfología conservada.",
+    "es": "Quiste simple de mayor dimensión en el cuadrante superior externo de la mama izquierda. Ganglios axilares de morfología conservada.",
+    "pts": 40,
+    "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+   },
+   {
+    "di": "Hipoplasia de la arteria vertebral derecha, no, perdón, izquierda, en su trayecto intracraneal, como variante anatómica.",
+    "es": "Hipoplasia de la arteria vertebral izquierda, en su trayecto intracraneal, como variante anatómica.",
+    "pts": 40,
+    "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+   }
   ]
+ ],
+ "r3": [
+  {
+   "seg": 100,
+   "titulo": "Resonancia de columna lumbar",
+   "texto": "RESONANCIA MAGNÉTICA DE COLUMNA LUMBAR. Rectificación de la lordosis lumbar con anterolistesis L5-S1 del 15%. Discopatía con reducción de la intensidad de señal de los discos intervertebrales. En L5-S1 estreñimiento{estrechamiento|Estreñimiento es un problema intestinal; el espacio intervertebral se estrecha.} del espacio intervertebral, lisis de la pars articular, artrósis{artrosis|Artrosis es llana terminada en s: no lleva tilde.} facetaria y engrosamiento de los ligamentos amarillos que reducen los recesos laterales, con predominio derecho. En L4-L5 pequeño quiste sinovial de 6 cm{mm|Un quiste sinovial facetario mide milímetros; 6 cm sería enorme.} que remodela el receso sin compromiso radicular. Cono medular a nivel T12-L1. Grupos musculares paravertebrales normales. Riñón derecho de menor tamaño, con hipertrofia compensadora del riñón izquierdo. CONCLUSIONES: anterolistesis L5-S1 del 15%. Cambios discartrósicos con compresión radicular de predominio izquierdo{derecho|Los hallazgos describen predominio derecho; la conclusión debe coincidir.}. Atrofia del riñón izquierdo{derecho|El riñón pequeño es el derecho; el izquierdo está hipertrofiado.} con hipertrofia compensadora contralateral. Correlacionar con hallasgos{hallazgos|Hallazgo se escribe con zg: hallar + -azgo.} clínicos."
+  },
+  {
+   "seg": 100,
+   "titulo": "Resonancia de cráneo",
+   "texto": "RESONANCIA MAGNÉTICA DE CRÁNEO. Desviación septal a la izquierda con aumento de volumen de los cornetes. Engrosamiento mucoperióstico del antro maxilar derecho con quiste de retención de 8 cm{mm|Un quiste de retención en el seno maxilar mide milímetros.}. Las celdillas mastoideas izquierdas muestran hiperintensidades en FLAIR y T2 por cambio inflamatorio. Cruce neurovascular intracanalicular izquierdo. En la sustancia blanca de ambos hemisferios hay hiperintensidades que no restringen en difución{difusión|Difusión se escribe con s, como difundir.}. Aracnoidocele cellar{selar|Selar viene de silla turca (sella); cellar no existe.} grado III que adelgaza el tejido hipofisiario. Hipoplasia de la arteria vertebral izquierda. CONCLUSIONES: leucoencefalopatía crónica por enfermedad de pequeño baso{vaso|Vaso sanguíneo, con v; bazo, con z, es el órgano.}. Mastoiditis derecha{izquierda|Las celdillas afectadas son las izquierdas.}. Sinusitis maxilar izquierda{derecha|El engrosamiento se describió en el antro maxilar derecho.}. Cruce neurovascular como variante anatómica."
+  },
+  {
+   "seg": 100,
+   "titulo": "Mastografía y ultrasonido",
+   "texto": "MASTOGRAFÍA Y ULTRASONIDO MAMARIO. Ambas mamas son simétricas, con piel de espesor normal. Parénquima de tipo fibroglandular disperso con calcificaciones vasculares bilaterales, típicamente benignas. Ganglios axilares con centro radiolúsido{radiolúcido|Radiolúcido, con c, como lúcido.}. Al complemento ecográfico, el parénquima muestra ecogenicidad homogénea. Quiste simple en la mama derecha de 3 cm{mm|La conclusión habla de 3 mm; un quiste de 3 cm no sería un hallazgo menor.} en el radio de las 10. No se observan nódulos sólidos ni zonas de distorción{distorsión|Distorsión se escribe con s, como torsión.} de la arquitectura. Conductos retroareolares de calibre normal. CONCLUSIONES: calcificaciones bilaterales típicamente benignas. Quiste simple en mama izquierda{derecha|El quiste se describió en la mama derecha.} de 3 mm. Categoría BI-RADS 2: hallazgos malignos{benignos|BI-RADS 2 significa hallazgos benignos.}. Seguimiento: mastografía anual de tamisaje{tamizaje|Tamizaje se escribe con z.}."
+  },
+  {
+   "seg": 100,
+   "titulo": "Tomografía de tórax y abdomen",
+   "texto": "TOMOGRAFÍA DE TÓRAX Y ABDOMEN. Derrame pleural derecho de moderada quantía{cuantía|Cuantía se escribe con c.} con atelectasia del lóbulo inferior derecho. En la base pulmonar derecha, masa hipodensa heterogénea de bordes irregulares de 9 cm. En la base pulmonar izquierda, nódulo de bordes espiculados de 23 cm{mm|Un nódulo pulmonar se mide en milímetros; 23 cm ocuparía casi todo el hemitórax.}. Traquea{Tráquea|Tráquea es esdrújula: lleva tilde.} central, con bifurcación de la carina de características normales. Adenopatía subcarinal de 28 mm. Hígado de morfología conservada, sin dilatación de la vía biliar. Páncreas, vaso{bazo|El bazo (con z) es el órgano; vaso (con v) es un conducto.} y glándulas suprarenales{suprarrenales|Supra + renal: entre vocal y r, la r se duplica.} normales. CONCLUSIONES: masa en la base pulmonar izquierda{derecha|La masa se describió en la base derecha.} sugestiva de proceso neoplásico. Nódulo espiculado izquierdo con atelectasia laminar. Adenopatías mediastinales de aspecto metastásico."
+  }
+ ],
+ "r4": [
+  [
+   {
+    "t": "Hemangioma en el cuerpo vertebral de T9 como hallazgo benigno.",
+    "seg": 8,
+    "pts": 40
+   },
+   {
+    "t": "Cruce neurovascular intracanalicular izquierdo como variante anatómica.",
+    "seg": 8,
+    "pts": 40
+   },
+   {
+    "t": "Quiste simple único en la mama derecha de 3 mm.",
+    "seg": 8,
+    "pts": 40
+   },
+   {
+    "t": "Vejiga anecoica con orina residual posmiccional mínima.",
+    "seg": 8,
+    "pts": 40
+   },
+   {
+    "t": "Lesión quística de 18 mm en el proceso uncinado del páncreas.",
+    "seg": 8,
+    "pts": 40
+   }
+  ],
+  [
+   {
+    "t": "Anterolistesis L5-S1 del 15% con cambios discartrósicos que afectan las raíces en tránsito, de predominio derecho.",
+    "seg": 12,
+    "pts": 60
+   },
+   {
+    "t": "Áreas focales de leucoencefalopatía crónica en la sustancia blanca de ambos hemisferios cerebrales.",
+    "seg": 12,
+    "pts": 60
+   },
+   {
+    "t": "Patrón mastográfico heterogéneamente denso, que pudiera ocultar nódulos pequeños; ganglios axilares conservados.",
+    "seg": 12,
+    "pts": 60
+   },
+   {
+    "t": "Hepatomegalia con cambios de hepatopatía crónica y datos de hipertensión portal con esplenomegalia.",
+    "seg": 12,
+    "pts": 60
+   },
+   {
+    "t": "Nódulo espiculado en la base pulmonar izquierda con atelectasia laminar y adenopatía subcarinal.",
+    "seg": 12,
+    "pts": 60
+   }
+  ]
+ ],
+ "r5": [
+  "anterolistesis",
+  "lordosis",
+  "discopatía",
+  "osteofito",
+  "foraminal",
+  "radicular",
+  "hipófisis",
+  "mastoiditis",
+  "leucoencefalopatía",
+  "aracnoidocele",
+  "hipoplasia",
+  "mastografía",
+  "parénquima",
+  "radiolúcido",
+  "ecográfico",
+  "retroareolar",
+  "espiculado",
+  "atelectasia",
+  "adenopatía",
+  "subcarinal",
+  "metastásico",
+  "neoplásico",
+  "próstata",
+  "anecoica",
+  "hepatomegalia",
+  "esplenomegalia",
+  "colédoco",
+  "páncreas",
+  "uncinado",
+  "hidrópica",
+  "diverticulosis",
+  "lipoma",
+  "espondilosis",
+  "mielomalacia",
+  "neuroforamen",
+  "cóclea",
+  "tálamo",
+  "cerebelo",
+  "hemisferio",
+  "vértebra",
+  "tráquea",
+  "mediastino",
+  "hígado",
+  "riñón",
+  "suprarrenal"
+ ],
+ "consejos": [
+  "Las palabras terminadas en -osis (artrosis, espondilosis, lordosis) son llanas terminadas en s: no llevan tilde.",
+  "Los adverbios en -mente conservan la tilde del adjetivo: heterogénea → heterogéneamente.",
+  "Bazo (órgano, con z) y vaso (conducto, con v) suenan igual: el contexto decide.",
+  "Incipiente (que empieza) no es lo mismo que insipiente (falto de saber).",
+  "Antes de entregar un reporte, compara la lateralidad de los hallazgos con la de las conclusiones.",
+  "Revisa las unidades: quistes, nódulos y litos casi siempre se miden en milímetros.",
+  "-patía lleva tilde: discopatía, adenopatía, leucoencefalopatía.",
+  "Supra + renal = suprarrenal: entre vocal y r, la r se duplica.",
+  "Cuando el médico se corrige («no, perdón…»), transcribe solo la versión final.",
+  "Los epónimos (Schmorl, Bosniak, Chilaiditi) se escriben con mayúscula y respetando su grafía original."
+ ]
 }

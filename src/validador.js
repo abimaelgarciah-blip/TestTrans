@@ -13,16 +13,30 @@ import {
   palabrasCrudas,
   parsearCazaErrores,
 } from './calificacion.js';
+import { FRASES_ORTOGRAFIA, alternativas } from './seleccion.js';
 
 const ID_EDICION = /^\d{4}-(0[1-9]|1[0-2])$/;
-export const FRASES_ORTOGRAFIA = 10;
+export { FRASES_ORTOGRAFIA };
 
 const esTexto = (v) => typeof v === 'string' && v.trim() !== '';
 const esPositivo = (v) => typeof v === 'number' && Number.isFinite(v) && v > 0;
+const CIFRAS_DICCIONARIO = new Set(Object.values(NUMEROS));
 
 /** Números escritos con letra que no están en el diccionario de conversión. */
 export function numerosSinDiccionario(texto) {
   return [...new Set(palabrasCrudas(texto).filter((p) => PALABRAS_NUMERO.has(p) && !(p in NUMEROS)))];
+}
+
+/**
+ * Cifras de un dictado que el participante no podría escribir con letra sin perder puntos:
+ * enteros fuera del diccionario y decimales ("3.5" se oye "tres punto cinco").
+ */
+export function cifrasNoDictables(texto) {
+  const problemas = new Set();
+  for (const m of String(texto ?? '').matchAll(/\d+(?:[.,]\d+)?/g)) {
+    if (/[.,]/.test(m[0]) || !CIFRAS_DICCIONARIO.has(String(Number(m[0])))) problemas.add(m[0]);
+  }
+  return [...problemas];
 }
 
 function revisarNumeros(texto, donde, errores) {
@@ -32,13 +46,58 @@ function revisarNumeros(texto, donde, errores) {
   }
 }
 
-function revisarSumaPuntos(lista, donde, errores) {
-  const suma = lista.reduce((acc, x) => acc + (Number(x?.pts) || 0), 0);
-  if (suma !== 100) errores.push(`${donde}: los puntos deben sumar 100 (suman ${suma}).`);
+function revisarCifrasDictado(texto, donde, errores) {
+  const malas = cifrasNoDictables(texto);
+  if (malas.length) {
+    errores.push(`${donde}: cifras que no se pueden escribir con letra de forma justa (${malas.join(', ')}). En dictados usa enteros del diccionario NUMEROS, sin decimales.`);
+  }
 }
 
 /**
- * Revisa una edición completa.
+ * Revisa una lista de posiciones con alternativas (r2, r4): cada alternativa con `revisar`,
+ * todas las alternativas de una posición con los mismos puntos, y la suma de posiciones = 100.
+ */
+function revisarPosiciones(lista, clave, revisar, errores) {
+  let suma = 0;
+  lista.forEach((posicion, i) => {
+    const alts = alternativas(posicion);
+    if (alts.length === 0) { errores.push(`${clave}[${i}]: la lista de alternativas está vacía.`); return; }
+    alts.forEach((item, j) => revisar(item, Array.isArray(posicion) ? `${clave}[${i}][${j}]` : `${clave}[${i}]`));
+    const puntos = new Set(alts.map((x) => x?.pts));
+    if (puntos.size > 1) errores.push(`${clave}[${i}]: todas las alternativas deben valer los mismos puntos.`);
+    suma += Number(alts[0]?.pts) || 0;
+  });
+  if (suma !== 100) errores.push(`${clave}: los puntos deben sumar 100 (suman ${suma}).`);
+}
+
+function revisarReporte(r3, donde, errores) {
+  if (!r3 || typeof r3 !== 'object') { errores.push(`${donde}: debe ser un objeto con "seg" y "texto".`); return; }
+  if (!esPositivo(r3.seg)) errores.push(`${donde}: "seg" debe ser un número positivo.`);
+  if (!esTexto(r3.texto)) { errores.push(`${donde}: falta "texto".`); return; }
+  const texto = r3.texto;
+  const llavesAbiertas = (texto.match(/\{/g) ?? []).length;
+  const llavesCerradas = (texto.match(/\}/g) ?? []).length;
+  const marcasBienFormadas = (texto.match(/\{[^{}]*\}/g) ?? []).length;
+  const marcas = erroresCazaErrores(parsearCazaErrores(texto));
+  if (llavesAbiertas !== llavesCerradas || llavesAbiertas !== marcasBienFormadas) {
+    errores.push(`${donde}: hay llaves sin cerrar o anidadas.`);
+  }
+  if (marcas.length !== marcasBienFormadas) {
+    errores.push(`${donde}: cada {corrección} debe ir pegada a la palabra equivocada, sin espacio.`);
+  }
+  if (marcas.length !== ERRORES_CAZA) {
+    errores.push(`${donde}: debe tener exactamente ${ERRORES_CAZA} marcas de error palabraMal{corrección} (tiene ${marcas.length}).`);
+  }
+  for (const m of marcas) {
+    if (!esTexto(m.correccion)) errores.push(`${donde}: la marca de "${m.texto}" no tiene corrección.`);
+    else if (normalizarTexto(m.correccion) === normalizarTexto(m.texto)) {
+      errores.push(`${donde}: la corrección de "${m.texto}" es igual a la palabra marcada.`);
+    }
+  }
+}
+
+/**
+ * Revisa una edición completa (banco de contenido).
  * @returns {string[]} lista de errores; vacía si la edición es válida.
  */
 export function validarEdicion(ed) {
@@ -48,16 +107,17 @@ export function validarEdicion(ed) {
   if (!ID_EDICION.test(ed.id ?? '')) errores.push('id: debe tener la forma AAAA-MM, por ejemplo "2026-11".');
   if (!esTexto(ed.titulo)) errores.push('titulo: falta el título de la edición.');
 
-  // r1: ortografía
+  // r1: ortografía — al menos 10 frases; si hay más, se sortean 10 por partida.
   if (!Array.isArray(ed.r1)) {
     errores.push('r1: debe ser una lista de frases.');
   } else {
-    if (ed.r1.length !== FRASES_ORTOGRAFIA) errores.push(`r1: debe tener exactamente ${FRASES_ORTOGRAFIA} frases (tiene ${ed.r1.length}).`);
+    if (ed.r1.length < FRASES_ORTOGRAFIA) errores.push(`r1: debe tener al menos ${FRASES_ORTOGRAFIA} frases (tiene ${ed.r1.length}).`);
     ed.r1.forEach((item, i) => {
       const donde = `r1[${i}]`;
       if (!esTexto(item?.q) || item.q.split('___').length !== 2) {
         errores.push(`${donde}: "q" debe contener exactamente un hueco "___".`);
       }
+      if (item?.nota !== undefined && !esTexto(item.nota)) errores.push(`${donde}: "nota" debe ser texto.`);
       if (!Array.isArray(item?.o) || item.o.length !== 3 || !item.o.every(esTexto)) {
         errores.push(`${donde}: "o" debe tener tres opciones de texto (la primera es la correcta).`);
         return;
@@ -67,14 +127,15 @@ export function validarEdicion(ed) {
         errores.push(`${donde}: hay opciones repetidas (${item.o.join(' / ')}).`);
       }
     });
+    const frases = ed.r1.map((x) => normalizarTexto(x?.q ?? ''));
+    if (new Set(frases).size !== frases.length) errores.push('r1: hay frases repetidas.');
   }
 
   // r2: dictado
   if (!Array.isArray(ed.r2) || ed.r2.length === 0) {
     errores.push('r2: debe ser una lista con al menos un dictado.');
   } else {
-    ed.r2.forEach((item, i) => {
-      const donde = `r2[${i}]`;
+    revisarPosiciones(ed.r2, 'r2', (item, donde) => {
       if (!esTexto(item?.di)) errores.push(`${donde}: falta "di" (texto que se dicta).`);
       if (!esTexto(item?.es)) errores.push(`${donde}: falta "es" (texto esperado).`);
       if (!esPositivo(item?.pts)) errores.push(`${donde}: "pts" debe ser un número positivo.`);
@@ -82,54 +143,25 @@ export function validarEdicion(ed) {
       if (item?.nota !== undefined && typeof item.nota !== 'string') errores.push(`${donde}: "nota" debe ser texto.`);
       revisarNumeros(item?.di, `${donde}.di`, errores);
       revisarNumeros(item?.es, `${donde}.es`, errores);
-    });
-    revisarSumaPuntos(ed.r2, 'r2', errores);
+      revisarCifrasDictado(item?.es, `${donde}.es`, errores);
+    }, errores);
   }
 
-  // r3: caza errores
-  if (!ed.r3 || typeof ed.r3 !== 'object') {
-    errores.push('r3: debe ser un objeto con "seg" y "texto".');
-  } else {
-    if (!esPositivo(ed.r3.seg)) errores.push('r3: "seg" debe ser un número positivo.');
-    if (!esTexto(ed.r3.texto)) {
-      errores.push('r3: falta "texto".');
-    } else {
-      const texto = ed.r3.texto;
-      const llavesAbiertas = (texto.match(/\{/g) ?? []).length;
-      const llavesCerradas = (texto.match(/\}/g) ?? []).length;
-      const marcasBienFormadas = (texto.match(/\{[^{}]*\}/g) ?? []).length;
-      const segmentos = parsearCazaErrores(texto);
-      const marcas = erroresCazaErrores(segmentos);
-      if (llavesAbiertas !== llavesCerradas || llavesAbiertas !== marcasBienFormadas) {
-        errores.push('r3: hay llaves sin cerrar o anidadas.');
-      }
-      if (marcas.length !== marcasBienFormadas) {
-        errores.push('r3: cada {corrección} debe ir pegada a la palabra equivocada, sin espacio.');
-      }
-      if (marcas.length !== ERRORES_CAZA) {
-        errores.push(`r3: debe tener exactamente ${ERRORES_CAZA} marcas de error palabraMal{corrección} (tiene ${marcas.length}).`);
-      }
-      for (const m of marcas) {
-        if (!esTexto(m.correccion)) errores.push(`r3: la marca de "${m.texto}" no tiene corrección.`);
-        else if (normalizarTexto(m.correccion) === normalizarTexto(m.texto)) {
-          errores.push(`r3: la corrección de "${m.texto}" es igual a la palabra marcada.`);
-        }
-      }
-    }
-  }
+  // r3: caza errores — un reporte o una lista de reportes alternativos.
+  const reportes = alternativas(ed.r3 ?? null);
+  if (reportes.length === 0 || reportes[0] === null) errores.push('r3: falta el reporte de caza errores.');
+  else reportes.forEach((r, i) => revisarReporte(r, Array.isArray(ed.r3) ? `r3[${i}]` : 'r3', errores));
 
   // r4: memoria
   if (!Array.isArray(ed.r4) || ed.r4.length === 0) {
     errores.push('r4: debe ser una lista con al menos una frase.');
   } else {
-    ed.r4.forEach((item, i) => {
-      const donde = `r4[${i}]`;
+    revisarPosiciones(ed.r4, 'r4', (item, donde) => {
       if (!esTexto(item?.t)) errores.push(`${donde}: falta "t" (frase a memorizar).`);
       if (!esPositivo(item?.seg)) errores.push(`${donde}: "seg" debe ser un número positivo.`);
       if (!esPositivo(item?.pts)) errores.push(`${donde}: "pts" debe ser un número positivo.`);
       revisarNumeros(item?.t, `${donde}.t`, errores);
-    });
-    revisarSumaPuntos(ed.r4, 'r4', errores);
+    }, errores);
   }
 
   // r5: racha
@@ -140,6 +172,10 @@ export function validarEdicion(ed) {
     const normalizados = ed.r5.map(normalizarTermino);
     const repetidos = normalizados.filter((t, i) => normalizados.indexOf(t) !== i);
     if (repetidos.length) errores.push(`r5: términos repetidos (${[...new Set(repetidos)].join(', ')}).`);
+  }
+
+  if (ed.consejos !== undefined && (!Array.isArray(ed.consejos) || !ed.consejos.every(esTexto))) {
+    errores.push('consejos: debe ser una lista de textos.');
   }
 
   return errores;

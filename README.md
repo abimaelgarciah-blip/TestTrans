@@ -20,7 +20,7 @@ Reglas de producto:
 |---|---|---|---|
 | Ortografía relámpago | 10 frases con hueco y tres opciones | 12 s por frase | 10 por acierto |
 | Dictado | 3 audios, máximo dos reproducciones | Libre | 30 + 30 + 40 por precisión |
-| Caza errores | Reporte con 6 errores ocultos | 90 s | 100/6 por acierto, −8 por falso positivo |
+| Caza errores | Reporte con 6 errores ocultos | 90–100 s | 100/6 por acierto, −8 por falso positivo |
 | Memoria | 2 frases que se muestran y desaparecen | 8 s y 12 s | 40 + 60 por precisión |
 | Racha perfecta | Términos con acentos, Enter para enviar | 45 s | 2 por acierto, ×2 desde 3 seguidos, ×3 desde 6 |
 
@@ -36,6 +36,7 @@ config.js               qué adaptador de almacenamiento usar y sus claves públ
 src/app.js              arranque y navegación entre pantallas
 src/rondas/*.js         una ronda por archivo: jugar(contenedor, datosEdicion, terminar)
 src/calificacion.js     normalización, distancia, puntajes (sin DOM)
+src/seleccion.js        sorteo del examen de cada partida a partir del banco (sin DOM)
 src/validador.js        validación de ediciones y resultados (sin DOM)
 src/audio.js            audio grabado o síntesis de voz, con respaldo en texto
 src/tabla.js            tabla de posiciones, medallas, acumulado, CSV
@@ -102,7 +103,12 @@ adaptador: 'sharepoint',
 sharepoint: { urlGuardar: '<URL del flujo Guardar>', urlListar: '<URL del flujo Listar>' },
 ```
 
-### Opción B — Supabase (si no hay licencia Premium)
+### Opción B — Supabase (configurada actualmente)
+
+El sitio usa el proyecto de Supabase «reto-transcripcion» (plan gratuito). Un proyecto gratuito se
+pausa tras unos 7 días sin actividad: si la tabla deja de responder, reactívalo desde el panel de
+Supabase (no se pierden datos).
+
 
 1. Crea un proyecto gratuito en Supabase.
 2. En *SQL Editor* ejecuta [`docs/supabase.sql`](docs/supabase.sql). Crea la tabla con restricciones
@@ -140,25 +146,41 @@ nunca como HTML; ESLint prohíbe `innerHTML`.
 
 ## Agregar la edición del mes siguiente
 
-1. Copia `ediciones/2026-12.json` como `ediciones/AAAA-MM.json` y cambia `id` y `titulo`.
-2. Escribe contenido nuevo e **inventado** siguiendo el formato:
-   - `r1`: exactamente 10 frases. `q` con un solo hueco `___`; `o` con tres opciones distintas y
-     **la correcta primero** (en pantalla se barajan).
-   - `r2`: dictados con `di` (lo que se dicta), `es` (lo esperado), `pts` (deben sumar 100), `audio`
-     opcional y `nota` opcional. El último dictado debe incluir una autocorrección del médico
-     («no, perdón, …»): `di` la contiene y `es` solo trae la versión final.
-   - `r3`: `seg` y `texto` con **exactamente seis** errores escritos `palabraMal{corrección}`, pegados a
-     la palabra. Cubre categorías distintas: ortografía, unidad (cm por mm), lateralidad contradictoria
-     entre hallazgo y conclusión, y parónimos (vaso/bazo, perineal/peritoneal, íleon/ilion…).
-   - `r4`: frases con `t`, `seg` y `pts` (deben sumar 100).
+Cada edición es un **banco de contenido**: en cada partida se sortea un examen distinto, así que
+dos compañeros casi nunca ven las mismas preguntas. Todas las variantes de una posición valen lo
+mismo y deben tener dificultad parecida, para que la competencia siga siendo justa.
+
+1. Copia `ediciones/2026-12.json` como `ediciones/AAAA-MM.json` y cambia `id`, `titulo` y `tema`.
+2. Escribe contenido nuevo e **inventado**. Puedes inspirarte en el vocabulario y el estilo de
+   reportes reales, pero nunca copies un estudio real ni datos de pacientes.
+   - `r1`: **al menos 10** frases (se sortean 10 por partida; 25–30 dan buena variedad). `q` con un
+     solo hueco `___`; `o` con tres opciones distintas y **la correcta primero**; `nota` opcional con
+     la regla, que se muestra en «Aprende de tus errores».
+   - `r2`: lista de **posiciones**. Cada posición es un dictado o una lista de dictados alternativos
+     con los mismos `pts` (las posiciones suman 100). Cada dictado: `di` (lo que se dicta), `es` (lo
+     esperado), `pts`, `audio` y `nota` opcionales. La última posición lleva autocorrección del médico
+     («no, perdón, …»): `di` la contiene y `es` solo trae la versión final. En `es` usa solo enteros
+     del diccionario `NUMEROS` (sin decimales), para que escribirlos con letra o con cifra valga igual.
+   - `r3`: un reporte o una **lista de reportes** alternativos, cada uno con `seg`, `titulo` y `texto`
+     con **exactamente seis** errores `palabraMal{corrección|explicación}` pegados a la palabra. La
+     explicación es opcional y se muestra en la revisión. Cubre categorías distintas: ortografía,
+     unidad (cm por mm), lateralidad contradictoria entre hallazgo y conclusión, y parónimos
+     (vaso/bazo, íleon/ilion, absceso/acceso…).
+   - `r4`: posiciones como en `r2`, cada frase con `t`, `seg` y `pts` (suman 100).
    - `r5`: al menos 10 términos distintos, preferentemente con acentos.
+   - `consejos`: lista opcional de datos breves de ortografía que se muestran en la portada y al
+     terminar cada ronda.
 3. Agrega el id a `ediciones/index.json`.
-4. Corre `npm test`. El validador revisa cada edición listada: si un dictado o una frase de memoria usa
-   un número en letra que no está en `NUMEROS` (`src/calificacion.js`), la prueba falla. Agrégalo al
-   diccionario o escríbelo con cifra.
+4. Corre `npm test`. El validador revisa cada edición listada y las pruebas sortean 50 exámenes por
+   edición para comprobar que todos valen 100 por ronda y que hay variedad real. Si un dictado usa un
+   número en letra que no está en `NUMEROS` (`src/calificacion.js`) o un decimal, la prueba falla.
 5. Juega la edición completa con `?prueba&edicion=AAAA-MM`.
 6. Haz merge a `main`. La edición se vuelve la vigente automáticamente el primer día de su mes
    (la fecha del equipo del participante decide). Puedes subirla con anticipación.
+
+Palabras con dos grafías aceptadas por la RAE (cardiaca/cardíaca, iliaca/ilíaca, posquirúrgico/
+postquirúrgico…) se igualan antes de calificar: escribir cualquiera de las dos es correcto. La lista
+está en `VARIANTES_ACEPTADAS` de `src/calificacion.js`.
 
 ## Grabar los audios del dictado
 

@@ -135,6 +135,23 @@ export function renderTablaEdicion(resultados, { slugActual, alReintentar } = {}
       el('tbody', {}, cuerpo)));
 }
 
+/** Podio con los tres primeros lugares. */
+export function renderPodio(resultados) {
+  const top = ordenarEdicion(resultados).slice(0, 3);
+  if (!top.length) return null;
+  const lugares = [
+    { r: top[1], puesto: 2, medalla: '🥈' },
+    { r: top[0], puesto: 1, medalla: '🥇' },
+    { r: top[2], puesto: 3, medalla: '🥉' },
+  ].filter((x) => x.r);
+  return el('ol', { clase: 'podio', 'aria-label': 'Podio' }, lugares.map(({ r, puesto, medalla }) =>
+    el('li', { clase: `podio-lugar podio-${puesto}` },
+      el('span', { clase: 'podio-medalla', 'aria-hidden': 'true' }, medalla),
+      el('span', { clase: 'podio-nombre' }, r.nombre),
+      el('span', { clase: 'podio-puntos' }, `${r.total} pts`),
+      el('span', { clase: 'podio-base' }, `${puesto}.º lugar`))));
+}
+
 export function renderMedallas(resultados) {
   const { general, porRonda } = calcularMedallas(resultados);
   if (!general) return null;
