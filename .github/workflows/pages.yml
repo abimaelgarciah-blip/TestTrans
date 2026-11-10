@@ -2,7 +2,6 @@ name: Pruebas y despliegue
 
 on:
   push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -28,7 +27,8 @@ jobs:
 
   desplegar:
     needs: pruebas
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    # Publica solo la rama principal del repositorio (main, o la que esté configurada como default).
+    if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     permissions:
       pages: write

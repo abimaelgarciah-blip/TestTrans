@@ -79,7 +79,7 @@ Parámetros útiles en la URL:
 ## Despliegue
 
 `.github/workflows/pages.yml` corre linter y pruebas en cada push y pull request, y publica la rama
-`main` en GitHub Pages. Activa Pages en *Settings → Pages → Source: GitHub Actions*. Solo se publican
+principal del repositorio (la *default branch*) en GitHub Pages. Activa Pages en *Settings → Pages → Source: GitHub Actions*. Solo se publican
 `index.html`, `config.js`, `src/`, `estilos/`, `ediciones/` y `audio/`.
 
 Si el repositorio es público, el contenido clínico inventado no representa riesgo, pero la clave de
