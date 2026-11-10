@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="light dark">
+  <title>Reto de transcripción · Grupo Río</title>
+  <link rel="stylesheet" href="estilos/estilos.css">
+  <link rel="icon" href="data:,">
+  <script type="module" src="src/app.js"></script>
+</head>
+<body>
+  <a class="saltar" href="#app">Saltar al contenido</a>
+  <header class="cabecera">
+    <div class="cabecera-interior">
+      <h1>Reto de transcripción</h1>
+      <p id="subtitulo" class="subtitulo">Grupo Río · Transcripción médica</p>
+    </div>
+  </header>
+  <main id="app" class="contenedor" tabindex="-1">
+    <p class="cargando">Cargando el reto…</p>
+    <noscript><p class="aviso aviso-error">El reto necesita JavaScript activado.</p></noscript>
+  </main>
+  <footer class="pie">
+    <p>Contenido clínico ficticio, creado solo para este concurso. No contiene datos de pacientes.</p>
+  </footer>
+  <div id="anuncios" class="solo-lector" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

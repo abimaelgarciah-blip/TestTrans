@@ -1,0 +1,50 @@
+{
+  "id": "2026-11",
+  "titulo": "Noviembre 2026",
+  "r1": [
+    { "q": "Se observa un ___ hepático de 3 cm.", "o": ["absceso", "acceso", "abseso"] },
+    { "q": "Vesícula biliar con ___ de su pared.", "o": ["engrosamiento", "engrozamiento", "engrosamiénto"] },
+    { "q": "Paciente con antecedente de ___ arterial sistémica.", "o": ["hipertensión", "hipertención", "hipertensíon"] },
+    { "q": "Se identifica ___ en el lóbulo inferior derecho.", "o": ["consolidación", "consolidasión", "consolidacion"] },
+    { "q": "Riñón izquierdo con ___ leve.", "o": ["hidronefrosis", "hidronefrósis", "hidronefrocis"] },
+    { "q": "Hallazgos sugestivos de ___ intestinal.", "o": ["obstrucción", "obstrución", "obstruccion"] },
+    { "q": "Imagen ___ de bordes regulares en el segmento VII.", "o": ["hipoecoica", "hipoecóica", "hipoequica"] },
+    { "q": "Se sugiere ___ con tomografía contrastada.", "o": ["correlacionar", "corelacionar", "correlasionar"] },
+    { "q": "Hígado de ___ conservada.", "o": ["ecogenicidad", "ecogenisidad", "ecojenicidad"] },
+    { "q": "Bazo de tamaño y ___ normales.", "o": ["morfología", "morfologia", "morfolojía"] }
+  ],
+  "r2": [
+    {
+      "di": "Hígado de tamaño normal, con ecogenicidad homogénea. No se observan lesiones focales.",
+      "es": "Hígado de tamaño normal, con ecogenicidad homogénea. No se observan lesiones focales.",
+      "pts": 30
+    },
+    {
+      "di": "Vesícula biliar distendida, con pared de tres milímetros y un lito de doce milímetros en su interior.",
+      "es": "Vesícula biliar distendida, con pared de 3 milímetros y un lito de 12 milímetros en su interior.",
+      "pts": 30
+    },
+    {
+      "di": "Riñón derecho de forma y tamaño normales. Se observa un quiste simple de quince milímetros en el polo superior, no, perdón, en el polo inferior. Sin dilatación del sistema colector.",
+      "es": "Riñón derecho de forma y tamaño normales. Se observa un quiste simple de 15 milímetros en el polo inferior. Sin dilatación del sistema colector.",
+      "pts": 40,
+      "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+    }
+  ],
+  "r3": {
+    "seg": 90,
+    "texto": "ULTRASONIDO ABDOMINAL. Hígado de tamaño normal con ecogenisidad{ecogenicidad} homogénea. Vesícula biliar con pared de 3 cm{mm}, sin litos. Vías biliares sin dilatación. Páncreas y vaso{bazo} de aspecto normal. Riñón derecho con quiste simple de 12 mm en el polo inferior. Riñón izquierdo sin alteraciones. No se observa líquido libre en cavidad perineal{peritoneal}. CONCLUSIÓN: quiste simple en riñón izquierdo{derecho}. Resto del estudio sin halazgos{hallazgos} de importancia."
+  },
+  "r4": [
+    { "t": "Quiste simple de 15 mm en el polo inferior del riñón derecho.", "seg": 8, "pts": 40 },
+    { "t": "Hígado con esteatosis leve, sin lesiones focales; vesícula biliar sin litos ni engrosamiento de pared.", "seg": 12, "pts": 60 }
+  ],
+  "r5": [
+    "colecistitis", "esplenomegalia", "hidronefrosis", "hepatomegalia", "vesícula",
+    "páncreas", "riñón", "ecogénico", "tórax", "neumotórax",
+    "apéndice", "íleo", "colédoco", "adenopatía", "nefrolitiasis",
+    "pielonefritis", "quístico", "parénquima", "hipoecoico", "esteatosis",
+    "ascitis", "colelitiasis", "peritoneo", "hemangioma", "diverticulitis",
+    "ecografía", "linfático", "isquémico", "pélvico", "hígado"
+  ]
+}

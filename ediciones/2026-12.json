@@ -1,0 +1,50 @@
+{
+  "id": "2026-12",
+  "titulo": "Diciembre 2026",
+  "r1": [
+    { "q": "Se observa ___ pleural derecho de pequeña cuantía.", "o": ["derrame", "derame", "derramme"] },
+    { "q": "Glándula tiroides con nódulo ___ en el lóbulo izquierdo.", "o": ["hipoecoico", "hipoecóico", "hipoecoíco"] },
+    { "q": "Silueta cardiaca sin datos de ___.", "o": ["cardiomegalia", "cardiomegália", "cardiomejalia"] },
+    { "q": "Se observa ___ laminar en el lóbulo medio.", "o": ["atelectasia", "atelestasia", "atelectacia"] },
+    { "q": "Patrón ___ bilateral de predominio basal.", "o": ["intersticial", "insterticial", "intersticíal"] },
+    { "q": "Imagen sugestiva de ___ en la base izquierda.", "o": ["neumonía", "neumonia", "neumunía"] },
+    { "q": "Estructuras óseas sin ___ aparentes.", "o": ["alteraciones", "alteraziones", "alterasiones"] },
+    { "q": "Se recomienda ___ por imagen.", "o": ["seguimiento", "siguimiento", "seguimíento"] },
+    { "q": "Nódulo con ___ gruesas en su interior.", "o": ["calcificaciones", "calsificaciones", "calcificasiones"] },
+    { "q": "Ensanchamiento del ___ superior.", "o": ["mediastino", "mediastíno", "mediastimo"] }
+  ],
+  "r2": [
+    {
+      "di": "Campos pulmonares bien ventilados. Silueta cardiaca de tamaño normal. Ángulos costofrénicos libres.",
+      "es": "Campos pulmonares bien ventilados. Silueta cardiaca de tamaño normal. Ángulos costofrénicos libres.",
+      "pts": 30
+    },
+    {
+      "di": "Glándula tiroides con un nódulo sólido de ocho milímetros en el lóbulo derecho, sin calcificaciones.",
+      "es": "Glándula tiroides con un nódulo sólido de 8 milímetros en el lóbulo derecho, sin calcificaciones.",
+      "pts": 30
+    },
+    {
+      "di": "Se observa derrame pleural izquierdo, no, perdón, derrame pleural derecho, de pequeña cuantía, con atelectasia pasiva del lóbulo inferior.",
+      "es": "Se observa derrame pleural derecho, de pequeña cuantía, con atelectasia pasiva del lóbulo inferior.",
+      "pts": 40,
+      "nota": "En este dictado el médico se corrige a mitad de la frase. Transcribe solo la versión final."
+    }
+  ],
+  "r3": {
+    "seg": 90,
+    "texto": "TOMOGRAFÍA DE ABDOMEN Y PELVIS. Hígado con lesión hipodenza{hipodensa} de 12 cm{mm} en el segmento VI, compatible con quiste simple. Vesícula biliar y vías biliares sin alteraciones. Apendice{Apéndice} de 11 mm de diámetro, con colección adyacente en fosa ilíaca derecha compatible con acceso{absceso}. Engrosamiento de la pared del ilion{íleon} terminal. Riñones de forma y tamaño normales. CONCLUSIÓN: apendicitis complicada con absceso en fosa ilíaca izquierda{derecha}."
+  },
+  "r4": [
+    { "t": "Nódulo tiroideo sólido de 8 mm en el lóbulo derecho, sin calcificaciones.", "seg": 8, "pts": 40 },
+    { "t": "Derrame pleural derecho de pequeña cuantía con atelectasia pasiva del lóbulo inferior; silueta cardiaca normal.", "seg": 12, "pts": 60 }
+  ],
+  "r5": [
+    "neumotórax", "atelectasia", "cardiomegalia", "mediastino", "tráquea",
+    "bronquiectasia", "enfisema", "hemitórax", "clavícula", "esternón",
+    "diafragma", "íleon", "apendicitis", "tiroides", "glándula",
+    "nódulo", "pericardio", "aórtico", "neumonía", "costofrénico",
+    "parénquima", "intersticial", "calcificación", "tomografía", "radiografía",
+    "bronquiolitis", "pleuresía", "hilio", "lóbulo", "cuantía"
+  ]
+}
