@@ -9,7 +9,7 @@
 // Si el adaptador elegido no tiene sus URLs/claves completas, el sitio funciona en modo local
 // y lo avisa en pantalla.
 export default {
-  adaptador: 'sharepoint',
+  adaptador: 'supabase',
 
   sharepoint: {
     // URL del flujo "Reto - Guardar resultado" (disparador HTTP, método POST).
@@ -20,9 +20,9 @@ export default {
 
   supabase: {
     // Por ejemplo: 'https://abcdefghijkl.supabase.co'
-    url: '',
+    url: 'https://anqppbbzgfcdfjfzdeau.supabase.co',
     // Clave anónima / publishable. Es pública por diseño: la seguridad la dan las políticas de fila.
-    claveAnonima: '',
+    claveAnonima: 'sb_publishable_9WZrtM6kjVmZGlKcCRW0cA_uZgLBYdi',
     tabla: 'resultados',
   },
 
