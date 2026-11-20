@@ -73,13 +73,13 @@
   <section id="juego" class="pantalla">
     <canvas id="lienzo"></canvas>
     <div id="controles" class="controles">
-      <div class="lado">
+      <div class="lado izq">
         <button data-control="izq" aria-label="Izquierda">◀</button>
         <button data-control="der" aria-label="Derecha">▶</button>
       </div>
-      <div class="lado">
+      <div class="lado der">
         <button data-control="freno" class="chico" aria-label="Frenar">⏬</button>
-        <button data-control="usar" class="usar" aria-label="Usar poder">🎁</button>
+        <button data-control="usar" class="usar" data-estado="vacio" aria-label="Usar poder"><span class="icono">🎁</span><span class="tecla">ESPACIO</span></button>
       </div>
     </div>
     <button id="btn-sonido" class="boton mini sonido" aria-label="Sonido">🔊</button>

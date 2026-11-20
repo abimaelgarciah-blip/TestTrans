@@ -145,6 +145,11 @@ export function construirPista(def, crearCanvas) {
   ctx.lineWidth = def.ancho + 340;
   trazar(ctx, pts); ctx.stroke();
 
+  // Sombra suave del pasto junto a la pista.
+  ctx.strokeStyle = 'rgba(0,0,0,0.13)';
+  ctx.lineWidth = def.ancho + 70;
+  trazar(ctx, pts); ctx.stroke();
+
   // Bordillo a rayas.
   ctx.lineWidth = def.ancho + 22;
   ctx.strokeStyle = c.bordillo[0];
@@ -154,9 +159,15 @@ export function construirPista(def, crearCanvas) {
   trazar(ctx, pts); ctx.stroke();
   ctx.setLineDash([]);
 
-  // Camino.
+  // Camino con líneas blancas en las orillas y una franja más oscura por donde pasan las llantas.
   ctx.lineWidth = def.ancho;
+  ctx.strokeStyle = '#f4f4f8';
+  trazar(ctx, pts); ctx.stroke();
+  ctx.lineWidth = def.ancho - 8;
   ctx.strokeStyle = c.camino;
+  trazar(ctx, pts); ctx.stroke();
+  ctx.lineWidth = def.ancho * 0.45;
+  ctx.strokeStyle = 'rgba(0,0,0,0.07)';
   trazar(ctx, pts); ctx.stroke();
   ctx.lineWidth = 4;
   ctx.setLineDash([30, 40]);
@@ -187,7 +198,27 @@ export function construirPista(def, crearCanvas) {
   }
   ctx.restore();
 
+  // Cajones de la parrilla de salida.
+  ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+  ctx.lineWidth = 3;
+  for (const l of parrilla(pts, def.ancho, 10)) {
+    ctx.save(); ctx.translate(l.x, l.y); ctx.rotate(l.ang);
+    ctx.beginPath(); ctx.moveTo(14, -13); ctx.lineTo(-10, -13); ctx.moveTo(14, 13); ctx.lineTo(-10, 13); ctx.moveTo(14, -13); ctx.lineTo(14, 13);
+    ctx.stroke();
+    ctx.restore();
+  }
+
   const datos = ctx.getImageData(0, 0, MUNDO, MUNDO);
+  // Grano fino (asfalto y pasto con textura) con azar determinista.
+  const d = datos.data;
+  let ruido = 12345;
+  for (let i = 0; i < d.length; i += 4) {
+    ruido = (ruido * 1103515245 + 12345) & 0x7fffffff;
+    const v = ((ruido >> 16) & 15) - 7;
+    d[i] = Math.max(0, Math.min(255, d[i] + v));
+    d[i + 1] = Math.max(0, Math.min(255, d[i + 1] + v));
+    d[i + 2] = Math.max(0, Math.min(255, d[i + 2] + v));
+  }
   const textura = new Uint32Array(datos.data.buffer);
 
   // Máscara de superficie a media resolución.
@@ -233,6 +264,29 @@ export function construirPista(def, crearCanvas) {
     deco.push({ x, y, emoji: def.deco[Math.floor(azar() * def.deco.length)], tam: 40 + azar() * 30 });
   }
 
+  // Vallas en el límite del área donde se puede manejar (se dibujan en 3D).
+  const vallas = [];
+  for (const lado of [-1, 1]) {
+    let previo = null;
+    let n = 0;
+    for (let i = 0; i < N; i += 2) {
+      const p = pts[i];
+      const nx = -Math.sin(p.ang) * lado, ny = Math.cos(p.ang) * lado;
+      let punto = null;
+      for (let dd = def.ancho / 2 + 40; dd < def.ancho / 2 + 240; dd += 4) {
+        if (superficie(p.x + nx * dd, p.y + ny * dd) === MURO) {
+          punto = { x: p.x + nx * (dd - 3), y: p.y + ny * (dd - 3) };
+          break;
+        }
+      }
+      if (punto && previo && Math.hypot(punto.x - previo.x, punto.y - previo.y) < 60) {
+        vallas.push({ a: previo, b: punto, color: n % 2 });
+        n++;
+      }
+      previo = punto;
+    }
+  }
+
   // Minimapa.
   const mini = crearCanvas(160, 160);
   const mi = mini.getContext('2d');
@@ -241,7 +295,7 @@ export function construirPista(def, crearCanvas) {
   mi.strokeStyle = 'rgba(0,0,0,0.45)'; mi.lineWidth = def.ancho + 90; trazar(mi, pts); mi.stroke();
   mi.strokeStyle = '#ffffff'; mi.lineWidth = def.ancho + 10; trazar(mi, pts); mi.stroke();
 
-  return { def, pts, N, textura, superficie, esferas, deco, mini, colorMuro: hexAEntero(c.muro) };
+  return { def, pts, N, textura, superficie, esferas, deco, vallas, mini, colorMuro: hexAEntero(c.muro) };
 }
 
 // Posiciones de salida detrás de la meta, en filas de dos.
