@@ -21,3 +21,6 @@ drop policy if exists "kart insertar" on public.kart_carreras;
 create policy "kart insertar" on public.kart_carreras for insert to anon, authenticated with check (true);
 
 grant select, insert on public.kart_carreras to anon, authenticated;
+
+-- Solo leer e insertar también a nivel de permisos (además de las políticas de fila).
+revoke update, delete, truncate on public.kart_carreras from anon, authenticated;

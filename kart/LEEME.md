@@ -72,8 +72,9 @@ Notas:
 
 1. Un proyecto gratuito de Supabase se **pausa tras 7 días sin uso**. Si el juego dice “Supabase no
    respondió”, reactívalo en el panel de Supabase.
-2. Para guardar el historial compartido ejecuta una vez [`docs/kart-supabase.sql`](../docs/kart-supabase.sql)
-   (crea `kart_carreras`). Sin la tabla se juega igual y cada equipo guarda su propio historial.
+2. El historial compartido vive en la tabla `kart_carreras` (ya creada en el proyecto «reto-transcripcion»
+   con [`docs/kart-supabase.sql`](../docs/kart-supabase.sql)). Solo permite leer e insertar. Si Supabase no
+   responde, cada equipo guarda su propio historial y lo avisa en pantalla.
 3. Parámetros de prueba: `?p2p=0` apaga la conexión directa; `?p2p=1` la activa en otros modos.
 
 ### C. Solo este navegador
