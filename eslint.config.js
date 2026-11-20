@@ -6,6 +6,12 @@ const navegador = Object.fromEntries([
   'console', 'structuredClone', 'requestAnimationFrame',
 ].map((n) => [n, 'readonly']));
 
+const navegadorKart = Object.fromEntries([
+  'cancelAnimationFrame', 'BroadcastChannel', 'WebSocket', 'Node', 'localStorage',
+].map((n) => [n, 'readonly']));
+
+const nodo = Object.fromEntries(['process', 'Buffer', 'console', 'URL'].map((n) => [n, 'readonly']));
+
 export default [
   { ignores: ['node_modules/', '_site/'] },
   js.configs.recommended,
@@ -29,4 +35,6 @@ export default [
       'prefer-const': 'error',
     },
   },
+  { files: ['kart/js/**/*.js'], languageOptions: { globals: { ...navegador, ...navegadorKart } } },
+  { files: ['kart/servidor.js'], languageOptions: { globals: nodo } },
 ];
