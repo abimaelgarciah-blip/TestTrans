@@ -8,6 +8,8 @@ se conservan como historial y en un acumulado.
 > **Todo el contenido clínico es ficticio.** Los reportes, dictados y frases se inventaron para el
 > juego. No se usan, graban ni reutilizan estudios ni datos de pacientes reales.
 
+> 🏁 **¿Buscas el juego de karts?** Está en [`kart/`](kart/LEEME.md): multijugador hasta 10, 3 carreras y podio.
+
 Reglas de producto:
 
 1. **La precisión pesa más que la velocidad.** El tiempo solo desempata; nunca suma puntos.

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Kart Fiesta</title>
+  <meta name="theme-color" content="#7b2ff7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap">
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>">
+</head>
+<body>
+  <div id="fondo" aria-hidden="true"></div>
+
+  <!-- 1. Inicio: nombre, personaje y botones grandes -->
+  <section id="inicio" class="pantalla activa">
+    <h1 class="logo"><span>K</span><span>a</span><span>r</span><span>t</span> <span>F</span><span>i</span><span>e</span><span>s</span><span>t</span><span>a</span> 🏁</h1>
+    <p class="lema">¡Carreras locas con tus compañeros! 3 carreras, puntos y un campeón.</p>
+
+    <div class="tarjeta">
+      <label class="etiqueta" for="nombre">1. Escribe tu nombre</label>
+      <input id="nombre" maxlength="16" autocomplete="off" placeholder="Tu nombre">
+      <p class="etiqueta">2. Elige tu personaje</p>
+      <div id="personajes" class="personajes"></div>
+    </div>
+
+    <div class="tarjeta botones">
+      <button id="btn-crear" class="boton grande rosa">🎉 Crear sala</button>
+      <div class="unirse">
+        <input id="codigo" maxlength="4" autocomplete="off" placeholder="CÓDIGO" aria-label="Código de la sala">
+        <button id="btn-unirse" class="boton grande azul">🚪 Entrar</button>
+      </div>
+      <div class="fila-chica">
+        <button id="btn-practica" class="boton verde">🤖 Practicar contra bots</button>
+        <button id="btn-historial" class="boton amarillo">📜 Historial</button>
+      </div>
+    </div>
+    <p id="modo-red" class="nota"></p>
+  </section>
+
+  <!-- 2. Sala de espera -->
+  <section id="sala" class="pantalla">
+    <div class="tarjeta">
+      <p class="etiqueta">Código de la sala</p>
+      <div class="codigo-grande" id="sala-codigo">----</div>
+      <p class="nota">Que todos abran esta misma página y escriban el código. <button id="btn-copiar" class="boton mini">📋 Copiar enlace</button></p>
+    </div>
+    <div class="tarjeta">
+      <p class="etiqueta"><span id="sala-cuantos">0</span>/10 corredores</p>
+      <ul id="sala-lista" class="lista-jugadores"></ul>
+      <div id="sala-anfitrion" class="oculto">
+        <div class="fila-chica">
+          <button id="btn-menos-bot" class="boton mini">➖ 🤖</button>
+          <span class="nota">Bots</span>
+          <button id="btn-mas-bot" class="boton mini">➕ 🤖</button>
+        </div>
+        <button id="btn-empezar" class="boton grande rosa">🏁 ¡Empezar Gran Premio!</button>
+      </div>
+      <p id="sala-espera" class="nota grande-nota">⏳ Esperando a que el anfitrión empiece…</p>
+    </div>
+    <div class="tarjeta como-jugar">
+      <p class="etiqueta">Cómo se juega</p>
+      <p>⌨️ <b>Flechas</b> o <b>WASD</b> para manejar · <b>ESPACIO</b> para usar tu poder.</p>
+      <p>📱 En celular el kart acelera solo: usa ◀ ▶ y toca 🎁.</p>
+      <p>❓ Pasa por las esferas para ganar poderes: 🍌 🔥 🚀 🍄 ⭐ ⚡ 🥧</p>
+      <p>🏆 3 carreras de 3 vueltas. Puntos: 15, 12, 10, 8, 7, 6, 5, 4, 3, 2.</p>
+    </div>
+    <button id="btn-salir" class="boton">↩ Salir</button>
+  </section>
+
+  <!-- 3. Carrera -->
+  <section id="juego" class="pantalla">
+    <canvas id="lienzo"></canvas>
+    <div id="controles" class="controles">
+      <div class="lado izq">
+        <button data-control="izq" aria-label="Izquierda">◀</button>
+        <button data-control="der" aria-label="Derecha">▶</button>
+      </div>
+      <div class="lado der">
+        <button data-control="freno" class="chico" aria-label="Frenar">⏬</button>
+        <button data-control="usar" class="usar" data-estado="vacio" aria-label="Usar poder"><span class="icono">🎁</span><span class="tecla">ESPACIO</span></button>
+      </div>
+    </div>
+    <button id="btn-sonido" class="boton mini sonido" aria-label="Sonido">🔊</button>
+  </section>
+
+  <!-- 4. Resultados de cada carrera -->
+  <section id="resultados" class="pantalla">
+    <div class="tarjeta">
+      <h2 id="res-titulo">Resultados</h2>
+      <table class="tabla">
+        <thead><tr><th>#</th><th>Corredor</th><th>Tiempo</th><th>Puntos</th></tr></thead>
+        <tbody id="res-carrera"></tbody>
+      </table>
+    </div>
+    <div class="tarjeta">
+      <h2>🏆 Puntos del Gran Premio</h2>
+      <table class="tabla">
+        <thead><tr><th>#</th><th>Corredor</th><th>C1</th><th>C2</th><th>C3</th><th>Total</th></tr></thead>
+        <tbody id="res-total"></tbody>
+      </table>
+      <p id="res-guardado" class="nota"></p>
+    </div>
+    <button id="btn-siguiente" class="boton grande rosa oculto">▶ Siguiente carrera</button>
+    <p id="res-espera" class="nota grande-nota">⏳ El anfitrión empezará la siguiente carrera…</p>
+  </section>
+
+  <!-- 5. Podio final -->
+  <section id="podio" class="pantalla">
+    <h1 class="logo chico">¡Tenemos campeón! 🏆</h1>
+    <div class="podio">
+      <div class="escalon segundo"><div class="quien" id="podio-2"></div><div class="bloque">2</div></div>
+      <div class="escalon primero"><div class="corona">👑</div><div class="quien" id="podio-1"></div><div class="bloque">1</div></div>
+      <div class="escalon tercero"><div class="quien" id="podio-3"></div><div class="bloque">3</div></div>
+    </div>
+    <div class="tarjeta">
+      <table class="tabla">
+        <thead><tr><th>#</th><th>Corredor</th><th>C1</th><th>C2</th><th>C3</th><th>Total</th></tr></thead>
+        <tbody id="podio-tabla"></tbody>
+      </table>
+    </div>
+    <button id="btn-otra" class="boton grande rosa oculto">🔁 Otro Gran Premio</button>
+    <button id="btn-inicio" class="boton">🏠 Volver al inicio</button>
+  </section>
+
+  <!-- 6. Historial -->
+  <section id="historial" class="pantalla">
+    <h2 class="titulo-pantalla">📜 Historial de Grandes Premios</h2>
+    <div id="hist-lista"></div>
+    <button id="btn-hist-volver" class="boton">↩ Volver</button>
+  </section>
+
+  <div id="aviso" class="aviso oculto"></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

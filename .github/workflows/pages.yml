@@ -43,6 +43,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -r index.html config.js src estilos ediciones _site/
+          mkdir -p _site/kart && cp -r kart/index.html kart/estilos.css kart/js _site/kart/
           if [ -d audio ]; then cp -r audio _site/; fi
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
