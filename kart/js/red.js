@@ -5,7 +5,7 @@
 import config from '../../config.js';
 
 export async function detectarModo() {
-  const forzado = new URLSearchParams(location.search).get('red');
+  const forzado = new URLSearchParams(location.search).get('red') ?? window.KART_RED;
   if (['servidor', 'supabase', 'local'].includes(forzado)) return forzado;
   try {
     const ctrl = new AbortController();
