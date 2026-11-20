@@ -467,6 +467,8 @@ function iniciarUI() {
     const url = `${location.origin}${location.pathname}?sala=${codigo}${params.get('red') ? `&red=${params.get('red')}` : ''}`;
     try { await navigator.clipboard.writeText(url); aviso('📋 Enlace copiado. ¡Pégalo en el chat del equipo!'); } catch { aviso(url, 8000); }
   };
+  // Doble toque o clic sostenido en la carrera: que no seleccione texto, no haga zoom ni abra menús.
+  for (const ev of ['selectstart', 'dblclick', 'contextmenu']) $('juego').addEventListener(ev, (e) => e.preventDefault());
   const bSonido = $('btn-sonido');
   bSonido.textContent = estaSilenciado() ? '🔇' : '🔊';
   bSonido.onclick = () => { bSonido.textContent = alternarSilencio() ? '🔇' : '🔊'; };

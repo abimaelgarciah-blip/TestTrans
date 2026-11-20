@@ -182,6 +182,7 @@ export function sfx(nombre) {
     case 'rayo': ruido(d, t, 0.8, 0.7, 'lowpass', 3000); tono(d, { tipo: 'square', nota: 96, t, dur: 0.6, vol: 0.15, desliz: -48 }); break;
     case 'pastel': ruido(d, t, 0.25, 0.6, 'lowpass', 500); tono(d, { tipo: 'sine', nota: 55, t, dur: 0.3, vol: 0.3, desliz: -12 }); break;
     case 'choque': ruido(d, t, 0.12, 0.35, 'lowpass', 800); break;
+    case 'charco': ruido(d, t, 0.35, 0.5, 'lowpass', 700); tono(d, { tipo: 'sine', nota: 50, t, dur: 0.25, vol: 0.2, desliz: -7 }); break;
     case 'vuelta': [84, 88].forEach((n, k) => tono(d, { nota: n, t: t + k * 0.1, dur: 0.15, vol: 0.2 })); break;
     case 'meta': [72, 76, 79, 84, 79, 84].forEach((n, k) => tono(d, { nota: n, t: t + k * 0.12, dur: 0.2, vol: 0.22 })); break;
     case 'clic': tono(d, { tipo: 'triangle', nota: 88, t, dur: 0.06, vol: 0.2 }); break;

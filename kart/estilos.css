@@ -121,6 +121,9 @@ input:focus { border-color: var(--rosa); }
 
 /* Juego */
 #juego.pantalla.activa { position: fixed; inset: 0; min-height: 0; padding: 0; overflow: hidden; background: #000; }
+/* En la carrera nada se selecciona ni se copia (doble toque en los botones, mantener presionado). */
+#juego, #juego * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+#juego { touch-action: none; }
 #lienzo { display: block; width: 100%; height: 100%; touch-action: none; }
 .controles {
   display: flex; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; pointer-events: none;

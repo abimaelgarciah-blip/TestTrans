@@ -1,5 +1,5 @@
 // Motor de la carrera: física arcade, pseudo-3D estilo "modo 7", ítems, bots y dibujo.
-import { indiceCercano, parrilla, MUNDO, MURO, PASTO } from './pistas.js';
+import { indiceCercano, parrilla, posicionObstaculo, MUNDO, MURO, PASTO } from './pistas.js';
 import { personaje } from './personajes.js';
 import { VUELTAS, sortearItem, ordinal, formatoTiempo } from './puntos.js';
 import { sfx, apurarMusica } from './audio.js';
@@ -68,7 +68,7 @@ export class Carrera {
         terminado: false, tiempo: null, lugar: i + 1, item: null, ruleta: 0, flags: 0,
         ef: { turbo: 0, estrella: 0, giro: 0, encogido: 0, pastel: 0 },
         red: { x: l.x, y: l.y, ang: l.ang, vel: 0, t: performance.now() }, visto: performance.now(),
-        ia: { carril: (Math.random() - 0.5) * 0.5, habilidad: 0.86 + Math.random() * 0.1, usarEn: 0, cambio: 0 },
+        ia: { carril: (Math.random() - 0.5) * 0.5, habilidad: 0.86 + Math.random() * 0.1, usarEn: 0, cambio: 0, atento: Math.random() < 0.7 },
         autopiloto: !!c.bot,
       });
     });
@@ -146,8 +146,21 @@ export class Carrera {
     const adelante = Math.round(7 + Math.abs(k.vel) / 40);
     const obj = p[(k.idx + adelante) % N];
     const nx = -Math.sin(obj.ang), ny = Math.cos(obj.ang);
-    const tx = obj.x + nx * k.ia.carril * this.pista.def.ancho;
-    const ty = obj.y + ny * k.ia.carril * this.pista.def.ancho;
+    let carril = k.ia.carril;
+    // Los bots atentos se hacen a un lado cuando ven venir un obstáculo.
+    if (k.ia.atento) {
+      const t = (ahora - this.inicio) / 1000;
+      for (const o of this.pista.obstaculos) {
+        const dist = (o.idx - k.idx + N) % N;
+        if (dist > 0 && dist < 16) {
+          const q = posicionObstaculo(o, t);
+          const lado = ((q.x - o.x) * o.nx + (q.y - o.y) * o.ny) / this.pista.def.ancho;
+          carril = lado > 0 ? -0.32 : 0.32;
+        }
+      }
+    }
+    const tx = obj.x + nx * carril * this.pista.def.ancho;
+    const ty = obj.y + ny * carril * this.pista.def.ancho;
     const deseado = Math.atan2(ty - k.y, tx - k.x);
     const dif = normalizar(deseado - k.ang);
     // Ítems: los usa después de un ratito.
@@ -212,6 +225,14 @@ export class Carrera {
     }
 
     this.actualizarProyectiles(dt, ahora);
+    // Destellos sobre las flechas turbo para que se noten de lejos.
+    if (this.cam) {
+      for (const tb of this.pista.turbos) {
+        if (Math.random() < dt * 5 && Math.hypot(tb.x - this.cam.x, tb.y - this.cam.y) < 700) {
+          this.particulas.emitir({ tipo: 'chispa', x: tb.x + (Math.random() - 0.5) * 30, y: tb.y + (Math.random() - 0.5) * 20, z: 1, vz: 30 + Math.random() * 20, vida: 0.6, tam: 1.4, crece: -0.5 });
+        }
+      }
+    }
     this.particulas.actualizar(dt);
     this.actualizarBoton(ahora);
     this.calcularLugares();
@@ -240,6 +261,17 @@ export class Carrera {
     if (k.ef.encogido) vmax *= 0.6;
     if (k.ef.pastel && k.bot) vmax *= 0.85;
     if (sup === PASTO && !k.ef.estrella) vmax = k.ef.turbo ? 260 : 115;
+    const zona = this.pista.zona(k.x, k.y);
+    k.enCharco = zona === 'charco' && !k.ef.estrella;
+    if (k.enCharco) {
+      vmax = Math.min(vmax, k.ef.turbo ? 250 : 100);
+      if (k.zonaAnterior !== 'charco' && k === this.yoKart) { sfx('charco'); this.aviso(`💦 ¡Charco de ${this.pista.def.charco.nombre}!`, 1000, 'mal'); }
+    }
+    if (zona === 'turbo' && k.ef.turbo < 0.6) {
+      k.ef.turbo = 1.3;
+      if (k === this.yoKart) { sfx('turbo'); this.aviso('🔥 ¡Turbo!', 800, 'grande'); }
+    }
+    k.zonaAnterior = zona;
 
     if (k.ef.giro > 0) {
       k.ang += 10 * dt;
@@ -497,6 +529,21 @@ export class Carrera {
           if (k === this.yoKart) sfx('esfera');
         }
       });
+      // Obstáculos que cruzan la pista
+      const t = (ahora - this.inicio) / 1000;
+      const radioObs = this.pista.def.obstaculo.tam * 0.38;
+      for (const o of this.pista.obstaculos) {
+        const q = posicionObstaculo(o, t);
+        const dx = k.x - q.x, dy = k.y - q.y, d = Math.hypot(dx, dy);
+        if (d < radio + radioObs - 4) {
+          if (d > 0.01) {
+            const nx = k.x + (dx / d) * 6, ny = k.y + (dy / d) * 6;
+            if (this.pista.superficie(nx, ny) !== MURO) { k.x = nx; k.y = ny; }
+          }
+          if (!k.ef.estrella) this.golpear(k, this.pista.def.obstaculo.texto);
+          else if (k === this.yoKart && Math.random() < 0.2) sfx('choque');
+        }
+      }
       // Proyectiles
       for (const p of this.proyectiles.values()) {
         if (p.dueno === k.id && p.edad < 0.8) continue;
@@ -698,6 +745,12 @@ export class Carrera {
       const z = cam.profundidad(e.x, e.y);
       if (z > 6 && z < LEJOS) escena.push({ z, dibujar: () => dibujarEsfera(ctx, cam, e, ahora) });
     }
+    const tCarrera = (ahora - this.inicio) / 1000;
+    for (const o of this.pista.obstaculos) {
+      const q = posicionObstaculo(o, tCarrera);
+      const z = cam.profundidad(q.x, q.y);
+      if (z > 10 && z < LEJOS) escena.push({ z, dibujar: () => this.dibujarObstaculo(cam, o, q, ahora) });
+    }
     for (const pr of this.proyectiles.values()) {
       const z = cam.profundidad(pr.x, pr.y);
       if (z < 6 || z > LEJOS) continue;
@@ -727,6 +780,28 @@ export class Carrera {
     ctx.drawImage(this.vineta, 0, 0);
     if (rapido && sujeto === this.yoKart) this.lineasVelocidad(ctx, CW, CH, hz * kh);
     this.dibujarHud(ctx, CW, CH, ahora);
+  }
+
+  dibujarObstaculo(cam, o, q, ahora) {
+    const p = cam.proyectar(q.x, q.y, 0);
+    if (!p) return;
+    const ctx = this.ctx;
+    const ob = this.pista.def.obstaculo;
+    const t = ob.tam * p.s;
+    if (t < 2) return;
+    ctx.fillStyle = 'rgba(20,10,40,0.3)';
+    ctx.beginPath(); ctx.ellipse(p.sx, p.sy, t * 0.42, t * 0.12, 0, 0, Math.PI * 2); ctx.fill();
+    // Hacia dónde se mueve en pantalla, para voltear la figura.
+    const adelante = cam.proyectar(q.x + o.nx * q.sentido * 10, q.y + o.ny * q.sentido * 10, 0);
+    const derecha = adelante ? adelante.sx > p.sx : true;
+    const brinco = Math.abs(Math.sin(ahora / 140 + o.fase)) * 3 * p.s;
+    ctx.save();
+    ctx.translate(p.sx, p.sy - t * 0.47 - brinco);
+    if (ob.rueda) ctx.rotate((ahora / 180) * (derecha ? 1 : -1));
+    else ctx.rotate(Math.sin(ahora / 140 + o.fase) * 0.08);
+    if (derecha && !ob.rueda) ctx.scale(-1, 1);
+    ctx.drawImage(imagenEmoji(ob.emoji, true), -t / 2, -t / 2, t, t);
+    ctx.restore();
   }
 
   dibujarValla(cam, v, z) {
@@ -883,6 +958,11 @@ export class Carrera {
     if (!k.sobrePasto && v > 170 && Math.abs(k.volante ?? 0) > 0.7 && r() < dt * 30) {
       const [x, y, z] = atras(-7.5, r() < 0.5 ? -9 : 9, 0.5);
       P.emitir({ tipo: 'humo', x, y, z, vx: (r() - 0.5) * 15, vy: (r() - 0.5) * 15, vz: 8, vida: 0.7, tam: 2.4, crece: 2, alfa: 0.55 });
+    }
+    if (k.enCharco && v > 30 && r() < dt * 35) {
+      const [x, y, z] = atras(-8, (r() - 0.5) * 18, 1);
+      const col = this.pista.def.charco.colores[r() < 0.5 ? 1 : 2];
+      P.emitir({ tipo: 'confeti', color: col, x, y, z, vx: fx * 30 + (r() - 0.5) * 60, vy: fy * 30 + (r() - 0.5) * 60, vz: 40 + r() * 40, g: 170, vida: 0.6, tam: 1, giro: r() * 6 });
     }
     if (k.ef.estrella > 0 && r() < dt * 45) {
       const [x, y, z] = atras((r() - 0.5) * 28, (r() - 0.5) * 22, 3 + r() * 14);

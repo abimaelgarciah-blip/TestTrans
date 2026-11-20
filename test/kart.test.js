@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { Buffer } from 'node:buffer';
 import { ordenarCarrera, calcularTotales, codigoSala, limpiarCodigo, limpiarNombre, sortearItem, pesosItem, formatoTiempo, PUNTOS } from '../kart/js/puntos.js';
-import { lineaCentral, indiceCercano, parrilla, PISTAS } from '../kart/js/pistas.js';
+import { lineaCentral, indiceCercano, parrilla, PISTAS, elementosPista, zonaEn, posicionObstaculo, POS_CHARCOS, POS_TURBOS, POS_OBSTACULOS } from '../kart/js/pistas.js';
 import { agrupar } from '../kart/js/guardado.js';
 import { leerMarco, crearMarco, registroValido } from '../kart/servidor.js';
 
@@ -65,6 +65,37 @@ describe('kart: pistas', () => {
       }
       assert.equal(indiceCercano(pts, pts[42].x + 3, pts[42].y - 2), 42);
       assert.equal(parrilla(pts, p.ancho, 10).length, 10);
+    });
+  }
+});
+
+describe('kart: obstáculos, charcos y flechas turbo', () => {
+  it('no se enciman con las esferas ni con la parrilla de salida', () => {
+    const fracciones = [...POS_CHARCOS.map((c) => c[0]), ...POS_TURBOS.map((t) => t[0]), ...POS_OBSTACULOS, 0.2, 0.5, 0.78].sort((a, b) => a - b);
+    for (let i = 1; i < fracciones.length; i++) assert.ok(fracciones[i] - fracciones[i - 1] >= 0.05, `muy juntos: ${fracciones[i - 1]} y ${fracciones[i]}`);
+    assert.ok(fracciones.at(-1) < 0.93, 'algo quedó en la parrilla de salida');
+    assert.ok(fracciones[0] > 0.03, 'algo quedó encima de la meta');
+  });
+
+  for (const p of PISTAS) {
+    it(`${p.nombre}: todo queda sobre el camino y funciona`, () => {
+      const pts = lineaCentral(p.puntos);
+      const el = elementosPista(p, pts);
+      const enCamino = (x, y) => { const i = indiceCercano(pts, x, y); return Math.hypot(pts[i].x - x, pts[i].y - y) < p.ancho / 2 - 5; };
+      for (const ch of el.charcos) { assert.ok(enCamino(ch.x, ch.y)); assert.equal(zonaEn(el, ch.x, ch.y), 'charco'); }
+      for (const t of el.turbos) { assert.ok(enCamino(t.x, t.y)); assert.equal(zonaEn(el, t.x, t.y), 'turbo'); }
+      assert.equal(zonaEn(el, pts[0].x, pts[0].y), null);
+      for (const o of el.obstaculos) {
+        let menor = Infinity, mayor = -Infinity;
+        for (let t = 0; t < o.periodo; t += 0.1) {
+          const q = posicionObstaculo(o, t);
+          assert.ok(Math.hypot(q.x - o.x, q.y - o.y) <= p.ancho / 2 - 13, 'el obstáculo se sale de la pista');
+          const lado = (q.x - o.x) * o.nx + (q.y - o.y) * o.ny;
+          menor = Math.min(menor, lado); mayor = Math.max(mayor, lado);
+        }
+        assert.ok(mayor - menor > p.ancho * 0.6, 'el obstáculo no cruza la pista');
+      }
+      assert.ok(p.obstaculo.emoji && p.obstaculo.texto && p.charco.colores.length === 3);
     });
   }
 });

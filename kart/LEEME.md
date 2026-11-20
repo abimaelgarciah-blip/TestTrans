@@ -30,6 +30,16 @@ quedó mejor en la última carrera. Desde la carrera 2, quien va abajo en la tab
 | ⚡ Rayo encogedor | Encoge y frena a todos los demás |
 | 🥧 Pastelazo | Mancha la pantalla de todos los que van adelante |
 
+**En la pista** (en los mismos lugares para todos):
+
+| Pista | Obstáculo que cruza (te hace girar) | Charco (te frena) |
+|---|---|---|
+| Pradera Feliz 🌻 | 🐄 vacas | lodo |
+| Playa Pirata 🏝️ | 🦀 cangrejos gigantes | agua |
+| Reino Dulce 🍭 | 🍩 donas que ruedan | chocolate |
+
+Además hay tres **flechas turbo** por vuelta que dan un acelerón. La estrella ⭐ te hace inmune a obstáculos y charcos.
+
 ## Tres formas de conectarse
 
 El juego detecta solo cuál usar (se ve abajo en la portada).

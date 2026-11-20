@@ -7,18 +7,24 @@ export const PISTAS = [
     puntos: [[350, 1500], [350, 600], [550, 330], [900, 330], [1050, 600], [1150, 850], [1400, 850], [1550, 550], [1750, 450], [1820, 800], [1750, 1300], [1500, 1650], [1000, 1750], [600, 1750]],
     colores: { pasto: ['#5cc84a', '#4fba3f'], camino: '#6d6d80', linea: '#ffffff', bordillo: ['#ff3b3b', '#ffffff'], muro: '#2e7d32', cielo: ['#3aa6ff', '#c4ecff'], cerros: '#3f9e4c', niebla: [196, 236, 255] },
     deco: ['🌳', '🌷', '🌻', '🍄', '🌳', '🌲'],
+    obstaculo: { emoji: '🐄', tam: 34, periodo: 5.2, texto: '🐄 ¡Muuu! Chocaste con una vaca' },
+    charco: { nombre: 'lodo', colores: ['#4a2e16', '#6e4a2a', '#9a7450'] },
   },
   {
     id: 'playa', nombre: 'Playa Pirata', emoji: '🏝️', ancho: 115,
     puntos: [[300, 1000], [350, 500], [700, 300], [1000, 550], [1300, 300], [1700, 350], [1800, 750], [1450, 1000], [1750, 1300], [1650, 1750], [1100, 1650], [800, 1800], [400, 1650]],
     colores: { pasto: ['#f4d58d', '#ebc874'], camino: '#7f8796', linea: '#fff2a8', bordillo: ['#ffcc00', '#1d7bff'], muro: '#2aa5df', cielo: ['#ff8a4c', '#ffe1a1'], cerros: '#e2a35c', niebla: [255, 225, 161] },
-    deco: ['🌴', '🦀', '⛱️', '🐚', '🌴', '🏴‍☠️'],
+    deco: ['🌴', '🐢', '⛱️', '🐚', '🌴', '🏴‍☠️'],
+    obstaculo: { emoji: '🦀', tam: 30, periodo: 3.6, texto: '🦀 ¡Te pellizcó un cangrejo!' },
+    charco: { nombre: 'agua', colores: ['#1667a8', '#2f93d6', '#c4ecff'] },
   },
   {
     id: 'dulce', nombre: 'Reino Dulce', emoji: '🍭', ancho: 115,
     puntos: [[1024, 250], [1600, 300], [1800, 700], [1500, 950], [1700, 1250], [1600, 1750], [1100, 1800], [900, 1450], [600, 1750], [300, 1500], [400, 1050], [250, 650], [550, 350]],
     colores: { pasto: ['#ffb8e1', '#ffa3d6'], camino: '#8c5a3c', linea: '#ffe6f3', bordillo: ['#ffffff', '#ff3d9a'], muro: '#b56fe0', cielo: ['#a77bff', '#ffd3f4'], cerros: '#ff7fc4', niebla: [255, 211, 244] },
-    deco: ['🍭', '🍩', '🧁', '🍬', '🍫', '🍦'],
+    deco: ['🍭', '🎂', '🧁', '🍬', '🍫', '🍦'],
+    obstaculo: { emoji: '🍩', tam: 30, periodo: 4.2, rueda: true, texto: '🍩 ¡Te atropelló una dona gigante!' },
+    charco: { nombre: 'chocolate', colores: ['#2e1407', '#552a12', '#a8683f'] },
   },
 ];
 
@@ -99,6 +105,59 @@ export function indiceCercano(pts, x, y, previo = -1, ventana = 25) {
     if (d < dmin) { dmin = d; mejor = i; }
   }
   return mejor;
+}
+
+// Charcos (frenan), flechas turbo (aceleran) y obstáculos que cruzan la pista.
+// Posiciones fijas por pista, a lo largo de la línea central, para que todos los jugadores vean lo mismo.
+// (Las esferas "?" van en 0.2, 0.5 y 0.78; la parrilla de salida ocupa el final de la vuelta.)
+export const POS_CHARCOS = [[0.12, 0.2], [0.42, -0.22], [0.72, 0.18]];
+export const POS_TURBOS = [[0.06, -0.18], [0.28, 0.2], [0.58, -0.2]];
+export const POS_OBSTACULOS = [0.35, 0.65, 0.88];
+
+export function elementosPista(def, pts) {
+  const N = pts.length;
+  const lateral = (p, f) => ({ x: p.x - Math.sin(p.ang) * f * def.ancho, y: p.y + Math.cos(p.ang) * f * def.ancho });
+  const charcos = POS_CHARCOS.map(([fr, off]) => {
+    const p = pts[Math.floor(fr * N)];
+    return { ...lateral(p, off), ang: p.ang, rx: 30, ry: 19 };
+  });
+  const turbos = POS_TURBOS.map(([fr, off]) => {
+    const p = pts[Math.floor(fr * N)];
+    return { ...lateral(p, off), ang: p.ang, largo: 46, ancho: 32 };
+  });
+  const obstaculos = POS_OBSTACULOS.map((fr, i) => {
+    const idx = Math.floor(fr * N);
+    const p = pts[idx];
+    return {
+      idx, x: p.x, y: p.y, nx: -Math.sin(p.ang), ny: Math.cos(p.ang),
+      amplitud: def.ancho / 2 - 14, periodo: (def.obstaculo?.periodo ?? 4) * (1 + i * 0.15), fase: i * 2.1,
+    };
+  });
+  return { charcos, turbos, obstaculos };
+}
+
+// 'charco' | 'turbo' | null según el punto (x, y).
+export function zonaEn(el, x, y) {
+  const local = (z) => {
+    const dx = x - z.x, dy = y - z.y, c = Math.cos(z.ang), s = Math.sin(z.ang);
+    return [dx * c + dy * s, -dx * s + dy * c];
+  };
+  for (const ch of el.charcos) {
+    const [lx, ly] = local(ch);
+    if ((lx / ch.rx) ** 2 + (ly / ch.ry) ** 2 < 1) return 'charco';
+  }
+  for (const t of el.turbos) {
+    const [lx, ly] = local(t);
+    if (Math.abs(lx) < t.largo / 2 && Math.abs(ly) < t.ancho / 2 + 3) return 'turbo';
+  }
+  return null;
+}
+
+// Posición de un obstáculo móvil a los t segundos de iniciada la carrera (igual en todos los equipos).
+export function posicionObstaculo(o, t) {
+  const a = (2 * Math.PI * Math.max(0, t)) / o.periodo + o.fase;
+  const s = Math.sin(a);
+  return { x: o.x + o.nx * o.amplitud * s, y: o.y + o.ny * o.amplitud * s, sentido: Math.cos(a) >= 0 ? 1 : -1 };
 }
 
 // Superficie: 0 muro, 1 pasto (lento), 2 camino, 3 bordillo.
@@ -208,6 +267,39 @@ export function construirPista(def, crearCanvas) {
     ctx.restore();
   }
 
+  // Charcos y flechas turbo pintados en el piso.
+  const elementos = elementosPista(def, pts);
+  const [chOscuro, chMedio, chClaro] = def.charco.colores;
+  for (const ch of elementos.charcos) {
+    ctx.save(); ctx.translate(ch.x, ch.y); ctx.rotate(ch.ang);
+    ctx.fillStyle = chMedio;
+    for (const [dx, dy, fx, fy] of [[0, 0, 1, 1], [-14, -7, 0.45, 0.5], [13, 6, 0.5, 0.55], [8, -9, 0.4, 0.4], [-10, 9, 0.35, 0.45]]) {
+      ctx.beginPath(); ctx.ellipse(dx, dy, ch.rx * fx, ch.ry * fy, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.fillStyle = chOscuro;
+    ctx.beginPath(); ctx.ellipse(1, 1, ch.rx * 0.72, ch.ry * 0.66, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = chClaro;
+    ctx.globalAlpha = 0.8;
+    for (const [dx, dy, r] of [[-10, -5, 3.2], [6, 4, 2.4], [12, -3, 1.8], [-3, 7, 1.6]]) {
+      ctx.beginPath(); ctx.ellipse(dx, dy, r * 1.6, r, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    ctx.restore();
+  }
+  for (const t of elementos.turbos) {
+    ctx.save(); ctx.translate(t.x, t.y); ctx.rotate(t.ang);
+    ctx.fillStyle = '#2a1052';
+    ctx.beginPath(); ctx.roundRect(-t.largo / 2, -t.ancho / 2, t.largo, t.ancho, 6); ctx.fill();
+    ctx.lineWidth = 2.5; ctx.strokeStyle = '#ffd21f'; ctx.stroke();
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 6;
+    [-14, 0, 14].forEach((x0, i) => {
+      ctx.strokeStyle = ['#ff3d9a', '#ff7a1a', '#ffd21f'][i];
+      ctx.beginPath(); ctx.moveTo(x0 - 6, -10); ctx.lineTo(x0 + 6, 0); ctx.lineTo(x0 - 6, 10); ctx.stroke();
+    });
+    ctx.restore();
+  }
+  ctx.lineCap = 'round';
+
   const datos = ctx.getImageData(0, 0, MUNDO, MUNDO);
   // Grano fino (asfalto y pasto con textura) con azar determinista.
   const d = datos.data;
@@ -295,7 +387,7 @@ export function construirPista(def, crearCanvas) {
   mi.strokeStyle = 'rgba(0,0,0,0.45)'; mi.lineWidth = def.ancho + 90; trazar(mi, pts); mi.stroke();
   mi.strokeStyle = '#ffffff'; mi.lineWidth = def.ancho + 10; trazar(mi, pts); mi.stroke();
 
-  return { def, pts, N, textura, superficie, esferas, deco, vallas, mini, colorMuro: hexAEntero(c.muro) };
+  return { def, pts, N, textura, superficie, esferas, deco, vallas, mini, colorMuro: hexAEntero(c.muro), ...elementos, zona: (x, y) => zonaEn(elementos, x, y) };
 }
 
 // Posiciones de salida detrás de la meta, en filas de dos.
