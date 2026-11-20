@@ -122,24 +122,26 @@ input:focus { border-color: var(--rosa); }
 .controles {
   display: flex; position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; pointer-events: none;
   justify-content: space-between; align-items: flex-end;
-  padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(22px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  padding: 16px max(12px, env(safe-area-inset-right, 0px)) calc(22px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+  /* Los botones se ajustan al ancho de la pantalla para que nunca se salgan (celulares angostos). */
+  --b: min(84px, 19vw); --chico: min(64px, 15vw); --usar: min(118px, 27vw); --sep: min(14px, 2.5vw);
 }
 body:not(.es-tactil) .controles { justify-content: flex-end; }
 body:not(.es-tactil) .controles .izq, body:not(.es-tactil) .controles [data-control="freno"] { display: none; }
-.controles .lado { display: flex; gap: 14px; align-items: flex-end; }
+.controles .lado { display: flex; gap: var(--sep); align-items: flex-end; flex: none; }
 .controles button {
-  pointer-events: auto; width: 84px; height: 84px; border-radius: 50%; font-size: 36px; border: 4px solid #fff;
+  pointer-events: auto; width: var(--b); height: var(--b); border-radius: 50%; font-size: calc(var(--b) * 0.43); border: 4px solid #fff; padding: 0;
   background: rgba(42, 16, 82, 0.6); color: #fff; touch-action: none; user-select: none; -webkit-user-select: none;
   box-shadow: 0 5px 0 rgba(20, 0, 40, 0.6); cursor: pointer;
 }
-.controles button.chico { width: 64px; height: 64px; font-size: 26px; }
+.controles button.chico { width: var(--chico); height: var(--chico); font-size: calc(var(--chico) * 0.4); }
 .controles button:active { background: rgba(255, 255, 255, 0.5); }
 .controles .usar {
-  width: 118px; height: 118px; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  width: var(--usar); height: var(--usar); padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
   background: radial-gradient(circle at 35% 28%, #ffa3d1, #ff3d9a 55%, #b5106c);
   border: 5px solid #fff; box-shadow: 0 0 0 4px #2a1052, 0 7px 0 4px #2a1052;
 }
-.usar .icono { font-size: 58px; line-height: 1; filter: drop-shadow(0 3px 0 rgba(40, 0, 60, 0.45)); }
+.usar .icono { font-size: calc(var(--usar) * 0.49); line-height: 1; filter: drop-shadow(0 3px 0 rgba(40, 0, 60, 0.45)); }
 .usar .tecla { font: 800 12px 'Baloo 2', system-ui, sans-serif; letter-spacing: 1.5px; color: #fff; margin-top: -2px; }
 body.es-tactil .usar .tecla { display: none; }
 .usar[data-estado="vacio"] { filter: saturate(0.35) brightness(0.9); opacity: 0.8; }
