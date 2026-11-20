@@ -3,6 +3,7 @@
 //   'supabase' → Supabase Realtime (por internet, sitio en GitHub Pages)
 //   'local'    → BroadcastChannel: pestañas del mismo navegador (pruebas y modo práctica)
 import config from '../../config.js';
+import { Malla, hayWebRTC } from './p2p.js';
 
 export async function detectarModo() {
   const forzado = new URLSearchParams(location.search).get('red') ?? window.KART_RED;
@@ -24,8 +25,25 @@ export const NOMBRE_MODO = {
   local: '🧪 Solo este navegador',
 };
 
-/** Conecta a una sala. Devuelve { enviar(tipo, datos), cerrar() }. alMensaje(tipo, datos, de). */
+/**
+ * Conecta a una sala. Devuelve { enviar(tipo, datos), cerrar(), estadoPar?(id) }. alMensaje(tipo, datos, de).
+ * Por internet (Supabase) los jugadores se conectan directo entre sí (WebRTC) y Supabase solo los presenta;
+ * así una sala de 10 cabe de sobra en el plan gratuito. ?p2p=1 lo fuerza en otros modos (pruebas) y ?p2p=0 lo apaga.
+ */
 export async function conectar(modo, sala, yo, alMensaje) {
+  const pedido = new URLSearchParams(location.search).get('p2p');
+  const usarMalla = hayWebRTC() && (pedido === '1' || (pedido !== '0' && modo === 'supabase'));
+  if (!usarMalla) return conectarBase(modo, sala, yo, alMensaje);
+  let malla = null;
+  const pendientes = [];
+  const base = await conectarBase(modo, sala, yo, (t, d, de) => (malla ? malla.recibirBase(t, d, de) : pendientes.push([t, d, de])));
+  malla = new Malla(base, yo, alMensaje);
+  for (const m of pendientes) malla.recibirBase(...m);
+  malla.iniciar();
+  return malla;
+}
+
+async function conectarBase(modo, sala, yo, alMensaje) {
   const sobre = (tipo, datos) => ({ t: tipo, de: yo, d: datos });
   const entregar = (m) => { if (m && m.de !== yo) alMensaje(m.t, m.d, m.de); };
 

@@ -8,6 +8,12 @@ import { guardarCarrera, leerHistorial } from './guardado.js';
 import { despertar, musica, sfx, alternarSilencio, estaSilenciado } from './audio.js';
 
 const MAX_CORREDORES = 10;
+const ICONO_ENLACE = { directo: '⚡', conectando: '⏳', respaldo: '🌐' };
+const TEXTO_ENLACE = {
+  directo: 'Conexión directa contigo',
+  conectando: 'Conectando…',
+  respaldo: 'Sin conexión directa: sus datos pasan por internet (un poco más lento)',
+};
 const $ = (id) => document.getElementById(id);
 
 function el(tag, props = {}, ...hijos) {
@@ -133,7 +139,7 @@ const datosYo = () => ({ nombre: yo.nombre, personaje: yo.personaje, unido: yo.u
 function vivos() {
   const ahora = Date.now();
   const lista = [{ id: yo.id, ...datosYo() }];
-  for (const m of miembros.values()) if (ahora - m.visto < 8000) lista.push(m);
+  for (const m of miembros.values()) if (ahora - m.visto < 12000) lista.push(m);
   lista.sort((a, b) => a.unido - b.unido || a.id.localeCompare(b.id));
   return lista;
 }
@@ -271,7 +277,7 @@ setInterval(() => {
   if (!red) return;
   red.enviar('hola', datosYo());
   const ahora = Date.now();
-  for (const [id, m] of miembros) if (ahora - m.visto > 15000) miembros.delete(id);
+  for (const [id, m] of miembros) if (ahora - m.visto > 20000) miembros.delete(id);
   if (soyAnfitrion()) actualizarSalaComoAnfitrion();
   pintarSala();
   pintarBotonesAnfitrion();
@@ -286,10 +292,12 @@ function pintarSala() {
   $('sala-cuantos').textContent = String(jugadores.length);
   $('sala-lista').replaceChildren(...jugadores.map((j) => {
     const p = personaje(j.personaje);
+    const enlace = !j.bot && j.id !== yo.id ? red?.estadoPar?.(j.id) : null;
     return el('li', { style: { background: p.color + '44' } },
       el('span', { class: 'cara' }, p.emoji),
       el('span', {}, `${j.bot ? '🤖 ' : ''}${j.nombre}${j.id === yo.id ? ' (tú)' : ''}`),
-      j.id === anf ? el('span', { class: 'corona', title: 'Anfitrión' }, '👑') : null);
+      enlace ? el('span', { class: `enlace ${enlace}`, title: TEXTO_ENLACE[enlace] }, ICONO_ENLACE[enlace]) : null,
+      j.id === anf ? el('span', { class: 'anfitrion', title: 'Anfitrión' }, '👑') : null);
   }));
   const host = soyAnfitrion();
   $('sala-anfitrion').classList.toggle('oculto', !host);
@@ -469,7 +477,7 @@ function iniciarUI() {
   }, { once: false });
   if (window.matchMedia?.('(pointer: coarse)').matches) document.body.classList.add('es-tactil');
   window.addEventListener('beforeunload', () => red?.enviar('adios', {}));
-  window.kartDepuracion = { get sala() { return sala; }, get carrera() { return carrera; }, get resultado() { return ultimoResultado; }, get podio() { return ultimoPodio; }, yo };
+  window.kartDepuracion = { get sala() { return sala; }, get carrera() { return carrera; }, get resultado() { return ultimoResultado; }, get podio() { return ultimoPodio; }, get red() { return red; }, yo };
 }
 
 iniciarUI();

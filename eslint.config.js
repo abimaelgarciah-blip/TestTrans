@@ -7,7 +7,7 @@ const navegador = Object.fromEntries([
 ].map((n) => [n, 'readonly']));
 
 const navegadorKart = Object.fromEntries([
-  'cancelAnimationFrame', 'BroadcastChannel', 'WebSocket', 'Node', 'localStorage',
+  'cancelAnimationFrame', 'BroadcastChannel', 'WebSocket', 'Node', 'localStorage', 'RTCPeerConnection',
 ].map((n) => [n, 'readonly']));
 
 const nodo = Object.fromEntries(['process', 'Buffer', 'console', 'URL'].map((n) => [n, 'readonly']));

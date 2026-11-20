@@ -111,7 +111,10 @@ input:focus { border-color: var(--rosa); }
   border: 3px solid var(--tinta); animation: entrar .35s ease-out;
 }
 .lista-jugadores .cara { font-size: 30px; }
-.lista-jugadores .corona { margin-left: auto; }
+.lista-jugadores .anfitrion { margin-left: auto; font-size: 20px; }
+.lista-jugadores .enlace { margin-left: auto; font-size: 16px; }
+.lista-jugadores .enlace + .anfitrion { margin-left: 4px; }
+.lista-jugadores .enlace.conectando { animation: latido 1s ease-in-out infinite; }
 @keyframes entrar { from { transform: scale(0.3); opacity: 0; } }
 
 .como-jugar p { margin: 4px 0; }

@@ -48,15 +48,33 @@ pregunta por el firewall, permite el acceso en redes privadas.
 
 ### B. Por internet (GitHub Pages + Supabase)
 
-El flujo de GitHub Pages publica el juego en `https://<tu-sitio>/kart/`, junto al reto. Usa el mismo
-proyecto de Supabase de `config.js`:
+El flujo de GitHub Pages publica el juego en `https://<usuario>.github.io/<repositorio>/kart/`, junto
+al reto, cada vez que cambia la rama principal. Usa el proyecto de Supabase de `config.js`.
 
-1. Si el proyecto está pausado, reactívalo en el panel de Supabase.
-2. En *SQL Editor* ejecuta [`docs/kart-supabase.sql`](../docs/kart-supabase.sql) (crea `kart_carreras`).
-3. Listo: las salas viajan por Supabase Realtime y el historial queda en la tabla.
+**Conexión directa entre jugadores (WebRTC).** Supabase solo sirve para que los jugadores se encuentren
+al entrar a la sala; las carreras viajan directo entre los equipos (`kart/js/p2p.js`). En la sala, junto a
+cada compañero aparece ⚡ (conexión directa), ⏳ (conectando) o 🌐 (sin conexión directa).
 
-El plan gratuito permite unos 100 mensajes por segundo; el juego manda 7 actualizaciones por segundo por
-equipo, suficiente para una sala de 10. Si notas karts “brincando”, usa la opción A.
+Cuentas con el plan gratuito de Supabase (cada mensaje cuenta 1 vez al enviarse y 1 vez por cada
+jugador que lo recibe; el límite es 100 por segundo y 2 millones al mes):
+
+| Situación (10 jugadores) | Mensajes de Supabase |
+|---|---|
+| Todos con conexión directa | ~5 por segundo; unos 6,000 por sesión → cientos de sesiones al mes |
+| 1 jugador sin conexión directa | ~50 por segundo durante la carrera |
+| Sin conexión directa (versión anterior) | ~750 por segundo (no cabía en el plan) |
+
+Si alguien no logra conexión directa (Wi-Fi de invitados con aislamiento, algunos datos móviles), juega
+por respaldo: el compañero con más conexiones hace de **puente** y le manda las posiciones de todos en
+un solo paquete, 2 veces por segundo. Si varios quedan en 🌐, conviene que se cambien a otra red.
+
+Notas:
+
+1. Un proyecto gratuito de Supabase se **pausa tras 7 días sin uso**. Si el juego dice “Supabase no
+   respondió”, reactívalo en el panel de Supabase.
+2. Para guardar el historial compartido ejecuta una vez [`docs/kart-supabase.sql`](../docs/kart-supabase.sql)
+   (crea `kart_carreras`). Sin la tabla se juega igual y cada equipo guarda su propio historial.
+3. Parámetros de prueba: `?p2p=0` apaga la conexión directa; `?p2p=1` la activa en otros modos.
 
 ### C. Solo este navegador
 
@@ -73,6 +91,7 @@ kart/js/pistas.js              3 pistas: Pradera Feliz 🌻, Playa Pirata 🏝�
 kart/js/personajes.js          personajes y nombres de bots
 kart/js/puntos.js              puntos, desempates y sorteo de poderes (con pruebas)
 kart/js/red.js                 transporte: servidor, Supabase o pestañas locales
+kart/js/p2p.js                 conexión directa entre jugadores (WebRTC) con puente de respaldo
 kart/js/guardado.js            historial (servidor, Supabase y copia local)
 kart/js/audio.js               música alegre y efectos, todo sintetizado
 kart/servidor.js               servidor de la oficina sin dependencias
